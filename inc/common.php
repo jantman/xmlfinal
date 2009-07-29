@@ -27,8 +27,8 @@
 // +----------------------------------------------------------------------+
 // | Authors: Jason Antman <jason@jasonantman.com>                        |
 // +----------------------------------------------------------------------+
-// | $LastChangedRevision:: 1                                           $ |
-// | $HeadURL:: http://svn.jasonantman.com/multibindadmin/inc/common.ph#$ |
+// | $LastChangedRevision::                                             $ |
+// | $HeadURL::                                                         $ |
 // +----------------------------------------------------------------------+
 
 
