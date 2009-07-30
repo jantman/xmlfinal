@@ -49,12 +49,51 @@ require_once('inc/common.php');
 
 <div id="content">
 
-<h3>Google Webmaster Tools.</h3>
-<?php error_log("PAGE NOT IMPLEMENTED: ".$_SERVER["SCRIPT_FILENAME"]); ?>
+<h3>Google Webmaster Tools</h3>
 
 <table class="mainTable">
-<tr><th>Site</th><th>Sitemaps</th><th>Messages</th><th>Crawl Errors</th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Site</th><th>Google Data</th><th>Indexed</th><th>Crawled</th><th>Crawl Rate</th><th>Verified</th></tr>
+
+<?php
+
+require_once('inc/google_data.php');
+$client = null;
+$auth_result = google_auth_start($CREDENTIAL_google_webmaster_user, $CREDENTIAL_google_webmaster_pass, $client);
+if($auth_result != "success"){ echo $auth_result; printFooter(); }
+
+require_once('inc/google_webmaster.php');
+$foo = googlewebm_list_sites($client);
+foreach($foo as $name => $arr)
+{
+    echo '<tr>'."\n";
+
+    echo '<td><a href="'.$name.'">'.$name.'</td>';
+
+    echo '<td><a href="web_webmaster_detail.php?site='.urlencode($name).'">Detail</a></td>';
+
+    if(isset($arr['indexed'])){ echo '<td>yes</td>';} else { echo '<td><strong>NO</strong></td>';}
+
+    if(isset($arr['crawled']))
+    {
+	echo '<td>'.$arr['crawled'].'</td>';
+    }
+    else
+    {
+	echo '<td><strong>NO</strong></td>';
+    }
+
+    if(isset($arr['crawl-rate'])){ echo '<td>'.$arr['crawl-rate'].'</td>';} else { echo '<td>&nbsp;</td>';}
+
+    if(isset($arr['verified'])){ echo '<td>yes</td>';} else { echo '<td><strong>NO</strong></td>';}
+
+    echo '</tr>'."\n";
+}
+
+
+?>
+
+
+
 </table>
 
 <ul>

@@ -1,6 +1,6 @@
 <?php
 // Time-stamp: "2009-07-30 10:04:41 jantman"
-// $Id: parseXML.php,v 1.2 2008/01/27 02:38:48 jantman Exp $
+// $Id$
 
 // inc/parseNagiosXML.php
 //
@@ -30,8 +30,8 @@
 // +----------------------------------------------------------------------+
 // | Authors: Jason Antman <jason@jasonantman.com>                        |
 // +----------------------------------------------------------------------+
-// | $LastChangedRevision:: 4                                           $ |
-// | $HeadURL:: http://svn.jasonantman.com/xmlfinal/inc/bind_graphs.php $ |
+// | $LastChangedRevision::                                             $ |
+// | $HeadURL::                                                         $ |
 // +----------------------------------------------------------------------+
 
 
