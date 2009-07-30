@@ -52,15 +52,19 @@ require_once('inc/common.php');
 <p><a href="antman_final_proposal.pdf">PDF of proposal</a></p>
 
 <p>After doing the below storyboard as a base for the site (took screenshot of another site I did with this layout and changed text) I realized that it was taking me MUCH longer to edit things together in a paint program than it would to just do up some quick-and-dirty HTML. So, for the storyboards, I have non-functional, rough-layout-only versions of a few of the pages for this site. Obviously, the design is quite rough and missing many key elements (and Im not yet sure about the dual navigation menu setup). </p>
-<ul>
-<li><a href="logs_spam.php">spamd (SpamAssassin) logs - MySQL data source, Google Visualization API</a></li>
-<li><a href="logs_bind.php">bind (named) logs - MySQL data source, Google Visualization API</a></li>
-<li><a href="web_webmaster.php">Google Webmaster Tools API</a></li>
-<li><a href="web_analytics.php">Google Analytics API - Google Analytics XML raw data, Google Visualization API</a></li>
-<li><a href="nagios.php">Nagios - Nagios statusXML feed, most likely a simple table display.</a></li>
-</ul>
 
-<img src="main.jpeg" width="800" height="817" alt="main_storyboard" style="border: 2px solid black;" />
+<table class="minorTable">
+<tr><th>Page</th><th>Data Source</th><th>XML Feed/Service</th><th>Data Source Status</th><th>Page Status</th></tr>
+<tr><td><a href="logs_spam.php">spamd (SpamAssassin) logs</a></td><td>MySQL (local)</td><td><a href="http://code.google.com/apis/visualization/">Google Visualization</a> (<a href="http://www.phpclasses.org/browse/package/4665.html">PHP wrapper class</a>)</td><td>OK.</td><td>Partially Implemented</td></tr>
+<tr><td><a href="logs_bind.php">bind (named) logs</a></td><td>MySQL (local)</td><td><a href="http://code.google.com/apis/visualization/">Google Visualization</a> (<a href="http://www.phpclasses.org/browse/package/4665.html">PHP wrapper class</a>)</td><td><em>FUBAR</em></td><td>Partially Implemented</td></tr>
+<tr><td><a href="web_webmaster.php">Webmaster Tools</a></td><td>&nbsp;</td><td><a href="http://code.google.com/apis/webmastertools/">Google Webmaster Tools API</a></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td><a href="web_analytics.php">Google Analytics</a></td><td>&nbsp;</td><td>API - <a href="http://code.google.com/apis/analytics/">Google Analytics</a> XML raw data, <a href="http://code.google.com/apis/visualization/">Google Visualization</a> (<a href="http://www.phpclasses.org/browse/package/4665.html">PHP wrapper class</a>)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td><a href="nagios.php">Nagios</a></td><td>Local XML</td><td><a href="http://svn.jasonantman.com/nagios-xml/">Nagios Status XML Feed generator</a></td><td>OK.</td><td>Done.</td></tr>
+</table>
+
+<br /><br />
+
+<div><img src="main.jpeg" width="800" height="817" alt="main_storyboard" style="border: 2px solid black;" /></div>
 
 <br /><br />
 
@@ -70,9 +74,14 @@ require_once('inc/common.php');
 <tr><td>Nagios</td><td>XML feed</td><td>yes</td><td>Partially</td></tr>
 <tr><td>Webmaster Tools</td><td>XML API </td><td>Yes </td><td>no </td></tr>
 <tr><td>G Analytics </td><td>XML feed </td><td>partial </td><td>no </td></tr>
-<tr><td>spamd logs </td><td>MySQL </td><td>yes </td><td>table only </td></tr>
-<tr><td>BIND logs </td><td>MySQL </td><td>NO </td><td>no </td></tr>
-<tr><td colspan="4"><em>optional data sources</em></td></tr>
+<tr><td>spamd logs </td><td>MySQL </td><td>yes </td><td>one of multiple views</td></tr>
+<tr><td>BIND logs </td><td>MySQL </td><td>some gaps</td><td>one of multiple views</td></tr>
+</table>
+
+<br />
+
+<table class="mainTable">
+<tr><td colspan="4"><em>optional data sources (ok, I&#39;ve given up on these)</em></td></tr>
 <tr><td>MySQL stats </td><td>MySQL </td><td>partial </td><td>table only </td></tr>
 <tr><td>Webalizer </td><td>standalone HTML </td><td>&nbsp; </td><td>&nbsp; </td></tr>
 <tr><td>AWstats </td><td>standalone HTML </td><td>&nbsp; </td><td>&nbsp; </td></tr>

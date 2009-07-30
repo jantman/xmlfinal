@@ -41,13 +41,13 @@ function printHeader()
     $links = array();
     $links["#"] = "&nbsp;";
     $links["index.php"] = "Home";
-    $links["logs.php"] = "Logs";
+    $links["logs.php"] = "Stats";
     $links["web.php"] = "Web";
     $links["syslog.php"] = "Syslog";
 
     $catLinks = array();
     $catLinks["Home"] = array("#" => "&nbsp;", "index.php" => "Home",  "hosts.php" => "Hosts", "sites.php" => "Sites", "nagios.php" => "Nagios");
-    $catLinks["Logs"] = array("#" => "&nbsp;", "logs.php" => "Summary", "logs_spam.php" => "spamd", "logs_bind.php" => "BIND", "logs_mysql.php" => "MySQL");
+    $catLinks["Stats"] = array("#" => "&nbsp;", "logs.php" => "Summary", "logs_spam.php" => "spamd", "logs_bind.php" => "BIND", "logs_mysql.php" => "MySQL");
     $catLinks["Web"] = array("#" => "&nbsp;", "web.php" => "Summary", "web_webmaster.php" => "Google Webmaster", "web_analytics.php" => "Google Analytics", "web_webalizer.php" => "Webalizer");
     $catLinks["Syslog"] = array("#" => "&nbsp;", "syslog.php" => "Summary", "syslog_tail.php" => "Tail", "syslog_search.php" => "Search", "syslog_stats.php" => "Stats");
 
