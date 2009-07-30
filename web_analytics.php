@@ -39,7 +39,7 @@ require_once('inc/common.php');
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>XML Final</title>
+<title>Google Analytics</title>
 <link rel="stylesheet" type="text/css" href="css/common.css" />
 <link rel="stylesheet" type="text/css" href="css/nav.css" />
 </head>
@@ -49,44 +49,44 @@ require_once('inc/common.php');
 
 <div id="content">
 
-<div>
-<label for="analytics_site">Site: </label>
-<select name="analytics_site" id="analytics_site">
-<option value="1">1.example.com</option>
-<option value="2">2.example.com</option>
-<option value="3">3.example.com</option>
-<option value="4">4.example.com</option>
-<option value="5">5.example.com</option>
-</select>
-<em>(changing selection populates the below (outlined blue) div for that site)</em>
-</div>
+<h3>Analytics</h3>
 
-<div id="siteContainer" style="margin-left: auto; margin-right: auto; width: 100%; border: 1px solid blue; margin-top: 2em;">
+<?php
 
-<div>
-<label for="analytics_metric">Metric: </label>
-<select name="analytics_metric" id="analytics_metric">
-<option value="summary">Summary</option>
-<option value="visits">Visits</option>
-<option value="sources">Traffic Sources</option>
-<option value="content">Content</option>
-<option value="search">Search Engines</option>
-</select>
-<em>(changing this select populates the below div with data)</em>
-</div>
+require_once('inc/google_data.php');
+$client = null;
+$auth_result = google_auth_start($CREDENTIAL_google_webmaster_user, $CREDENTIAL_google_webmaster_pass, "analytics", $client);
+if($auth_result != "success"){ echo $auth_result; printFooter(); die(); }
 
-<div id="siteData" style="margin-left: auto; margin-right: auto; width: 90%; border: 1px solid red; margin-top: 2em;">
+require_once('inc/google_analytics.php');
+googleana_update_sites($client, $CREDENTIAL_google_webmaster_user);
+$sites = googleana_list_sites();
 
-<!-- FILLER -->
-<div style="margin-left: auto; margin-right: auto; margin-top: 2px; margin-bottom: 1px; border: 2px dashed black; width: 640px; height: 480px;"><p style="text-align: center; font-weight: bold; font-style: italic;">(graph goes here)</p></div>
-<div style="margin-left: auto; margin-right: auto; margin-top: 2px; margin-bottom: 1px; border: 2px dashed black; width: 640px; height: 200px;"><p style="text-align: center; font-weight: bold; font-style: italic;">(table with data here)</p></div>
-<!-- END FILLER -->
+$first_site_id = "";
 
-</div> <!-- close siteData div -->
+echo '<p>'."\n";
+echo '<label for="siteID">Site: </label><select name="site" id="site">';
+foreach($sites as $name => $id)
+{
+    echo '<option value="'.$id.'">'.$name.'</option>';
+    if($first_site_id==""){ $first_site_id = $id;}
+}
+echo '</select>'."\n";
+echo '</p>'."\n";
 
-</div> <!-- close siteContainer div -->
+?>
 
-<?php error_log("PAGE NOT IMPLEMENTED: ".$_SERVER["SCRIPT_FILENAME"]); ?>
+<div id="analyticsContainer">
+
+<?php
+echo '<pre>';
+echo $first_site_id."\n";
+echo getGoogleAnaContent($client, $first_site_id);
+echo '</pre>';
+?>
+
+</div> <!-- END analyticsContainer DIV -->
+
 
 </div>
 

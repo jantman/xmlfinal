@@ -58,7 +58,7 @@ require_once('inc/common.php');
 
 require_once('inc/google_data.php');
 $client = null;
-$auth_result = google_auth_start($CREDENTIAL_google_webmaster_user, $CREDENTIAL_google_webmaster_pass, $client);
+$auth_result = google_auth_start($CREDENTIAL_google_webmaster_user, $CREDENTIAL_google_webmaster_pass, "sitemaps", $client);
 if($auth_result != "success"){ echo $auth_result; printFooter(); }
 
 require_once('inc/google_webmaster.php');

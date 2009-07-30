@@ -13,6 +13,13 @@ $config_spam_db_user = "";
 $config_spam_db_pass = "";
 $config_spam_db_name = "spam_data";
 
+$config_googleana_cache_db_host = "";
+$config_googleana_cache_db_user = "";
+$config_googleana_cache_db_pass = "";
+$config_googleana_cache_db_name = "site";
+$config_googleana_cache_table = "googleana_sites";
+$config_googleana_cache_ttl = 86400;
+
 $config_nagios_xml_path = "http://mon1.jasonantman.com/scripts/statusXML.php";
 $config_nagios_host = "MON1";
 

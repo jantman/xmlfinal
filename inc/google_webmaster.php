@@ -1,5 +1,5 @@
 <?php
-// inc/google_data.php
+// inc/google_webmaster.php
 //
 // +----------------------------------------------------------------------+
 // | XML Final Project      http://xmlfinal.jasonantman.com               |
@@ -31,20 +31,15 @@
 // | $HeadURL::                                                         $ |
 // +----------------------------------------------------------------------+
 
-require_once('Zend/Gdata.php');
-require_once('Zend/Gdata/Query.php');
 
 /**
- * Return a list of the names of the sites in a webmaster tools account, along with the side IDs.
+ * Return an array of the names of the sites in a webmaster tools account, along with the other information on them.
  * @param Zend_Http_Client $client an established authenticated connection to Google.
  * @return array
  */
 function googlewebm_list_sites($client)
 {
-    $gdata = new Zend_Gdata($client);
-    $query = new Zend_Gdata_Query('https://www.google.com/webmasters/tools/feeds/sites/');
-    $query->setMaxResults(0);
-    $feed = $gdata->getFeed($query);
+    $feed = google_get_feed($client, 'https://www.google.com/webmasters/tools/feeds/sites/');
 
     $res = array();
 

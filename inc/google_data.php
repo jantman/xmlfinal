@@ -36,26 +36,28 @@ require_once('Zend/Gdata.php');
 require_once('Zend/Gdata/ClientLogin.php');
 require_once('Zend/Gdata/App/CaptchaRequiredException.php');
 require_once('Zend/Gdata/App/AuthException.php');
+require_once('Zend/Gdata/Query.php');
 
 
 /**
  * Authenticate to google. Returns "success" or an error message to be shown to the user on failure.
  * @param string $user 
  * @param string $pass
+ * @param string $service the service name - sitemaps, analytics, etc.
  * @param Zend_Http_Client $client
  * @return string
  */
-function google_auth_start($user, $password, &$client)
+function google_auth_start($user, $password, $service, &$client)
 {
     try
     {
 	if(isset($_POST['GDA_captcha']))
 	{
-	    $client = Zend_Gdata_ClientLogin::getHttpClient($user, $password, 'sitemaps', null, 'Zend-ZendFramework', $_POST['GDA_captcha'], $_POST['GDA_captcha_answer']);
+	    $client = Zend_Gdata_ClientLogin::getHttpClient($user, $password, $service, null, 'Zend-ZendFramework', $_POST['GDA_captcha'], $_POST['GDA_captcha_answer']);
 	}
 	else
 	{
-	    $client = Zend_Gdata_ClientLogin::getHttpClient($user, $password, 'sitemaps');
+	    $client = Zend_Gdata_ClientLogin::getHttpClient($user, $password, $service);
 	}
     }
     catch (Zend_Gdata_App_CaptchaRequiredException $cre)
@@ -76,7 +78,36 @@ function google_auth_start($user, $password, &$client)
 	    echo '<div class="errorDiv">Problem authenticating: ' . $ae->getMessage() . "</div>\n";
 	    die(); // TODO - this should just return, and handle the error in the calling function
 	}
+    catch (Zend_Gdata_App_HttpException $he)
+	{
+	    echo '<div class="errorDiv">Problem authenticating: ' . $he->getMessage() . "</div>\n";
+	    die(); // TODO - this should just return, and handle the error in the calling function
+	}
     return "success";
+}
+
+/**
+ * Get a feed from the Gdata service
+ * @param Zend_Http_Client $client an established authenticated connection to Google.
+ * @param string $url URL of feed
+ * @return Zend_Gdata_Feed
+ */
+function google_get_feed($client, $url)
+{
+    $feed = false;
+    try
+    {
+	$gdata = new Zend_Gdata($client);
+	$query = new Zend_Gdata_Query($url);
+	$query->setMaxResults(0);
+	$feed = $gdata->getFeed($query);
+    }
+    catch (Zend_Gdata_App_HttpException $he)
+	{
+	    echo '<div class="errorDiv">Problem authenticating: ' . $he->getMessage() . "</div>\n";
+	    die(); // TODO - this should just return, and handle the error in the calling function
+	}
+    return $feed;
 }
 
 ?>
