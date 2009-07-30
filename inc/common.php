@@ -155,4 +155,23 @@ function updateZoneSerial($zone_id, $view)
     }
 }
 
+/**
+ * Converts a numeric age in seconds to a textual time period
+ * @param int $age age in seconds
+ * @return string
+ */
+function ageToTimePeriod($age)
+{
+    switch ($age)
+    {
+	case 604800:
+	    return "7 Days";
+	case 86400:
+	    return "24 Hours";
+	case 2592000:
+	    return "30 Days";
+    }
+    return $age." seconds";
+}
+
 ?>

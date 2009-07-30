@@ -32,6 +32,11 @@
 // +----------------------------------------------------------------------+
 require_once('config/config.php');
 require_once('inc/common.php');
+require_once('googlevis/config.inc.php');
+
+$conn = mysql_connect($config_spam_db_host, $config_spam_db_user, $config_spam_db_pass) or die("Unable to connect to MySQL database for SPAM.<br />");
+mysql_select_db($config_spam_db_name) or die("Unable to select database: ".$config_spam_db_name.".<br />");
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,7 +44,7 @@ require_once('inc/common.php');
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>XML Final</title>
+<title>Spam Stats</title>
 <link rel="stylesheet" type="text/css" href="css/common.css" />
 <link rel="stylesheet" type="text/css" href="css/nav.css" />
 </head>
@@ -50,16 +55,51 @@ require_once('inc/common.php');
 <div id="content">
 
 <h2>spamd stats</h2>
-<h3>(server name, date/time of newest data)</h3>
-<?php error_log("PAGE NOT IMPLEMENTED: ".$_SERVER["SCRIPT_FILENAME"]); ?>
 
-<div style="margin-left: auto; margin-right: auto; margin-top: 2px; margin-bottom: 1px; border: 2px dashed black; width: 640px; height: 480px;"><p style="text-align: center; font-weight: bold; font-style: italic;">(column graph of spam rule hits (as percentage of total hits) for week, month, year)</p></div>
+<?php
+$query = "SELECT log_ts FROM messages WHERE DATE(FROM_UNIXTIME(log_ts))!= '2009-12-31' ORDER BY log_ts DESC LIMIT 1;";
+$result = mysql_query($query) or dberror($query, mysql_error());
+$row = mysql_fetch_assoc($result);
+$foo = $row['log_ts'];
+?>
 
-<div style="margin-left: auto; margin-right: auto; margin-top: 2px; margin-bottom: 1px; border: 2px dashed black; width: 640px; height: 480px;"><p style="text-align: center; font-weight: bold; font-style: italic;">(column graph of total number of spam messages by hour of day for week, month, year)</p></div>
+<h3>mailmaster.jasonantman.com, data as of <?php echo date($config_header_date_format, $foo); ?></h3>
 
-<div style="margin-left: auto; margin-right: auto; margin-top: 2px; margin-bottom: 1px; border: 2px dashed black; width: 640px; height: 200px;"><p style="text-align: center; font-weight: bold; font-style: italic;">(table of all spamd rules used with name, description, link to SpamAssassin wiki page)</p></div>
-
+<div>
+<label for="type">Type: </label>
+<select name="type" id="type">
+<option value="percent">Spam vs Ham</option>
+<option value="hour">Spam by Hour of Day</option>
+<option value="day">Spam by Day of Week</option>
+</select>
+<em>(changing selection populates the below (outlined blue) div for that zone)</em>
 </div>
+
+<div class="graphPageContainer">
+
+<?php require_once("inc/spam_graphs.php"); ?>
+
+<!-- BEGIN ONE GRAPH -->
+<div class="graphContainer" id="graphContainer1" style="height: 100%;">
+<?php
+echo spam_percentSpamGraph(604800); // 7 days
+?>
+</div> <!-- close graphContainer Div -->
+<!-- END ONE GRAPH -->
+
+<!-- <div class="clearing"></div> -->
+
+<!-- BEGIN ONE GRAPH -->
+<div class="graphContainer" id="graphContainer2" style="height: 100%;">
+<?php
+echo spam_percentSpamGraph(2592000); // 7 days
+?>
+</div> <!-- close graphContainer Div -->
+<!-- END ONE GRAPH -->
+
+</div> <!-- close graphPageContainer DIV -->
+
+</div> <!-- close content DIV -->
 
 <?php printFooter(); ?>
 </body>

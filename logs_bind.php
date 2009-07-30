@@ -51,10 +51,9 @@ require_once('inc/common.php');
 <div id="content">
 
 <h2>BIND statistics</h2>
-<?php error_log("PAGE NOT IMPLEMENTED: ".$_SERVER["SCRIPT_FILENAME"]); ?>
 
 <?php
-include_once 'googlevis/config.inc.php';
+require_once('googlevis/config.inc.php');
 $conn = mysql_connect($config_bind_db_host, $config_bind_db_user, $config_bind_db_pass) or die("Unable to connect to MySQL database for BIND.<br />");
 mysql_select_db($config_bind_db_name) or die("Unable to select database: ".$config_bind_db_name.".<br />");
 
@@ -115,6 +114,8 @@ echo bind_queryByHostType(86400); // 7 days
 <!-- END ONE GRAPH -->
 
 </div> <!-- close graphPageContainer DIV -->
+
+</div> <!-- close content DIV -->
 
 <?php printFooter(); ?>
 </body>

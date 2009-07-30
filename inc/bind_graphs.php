@@ -39,17 +39,7 @@
 
 function bind_queryByHostType($age = 604800)
 {
-    switch ($age)
-    {
-	case 604800:
-	    $timeperiod = "7 Days";
-	    break;
-	case 86400:
-	    $timeperiod = "24 Hours";
-	    break;
-	default:
-	    $timeperiod = $age." seconds";
-    }
+    $timeperiod = ageToTimePeriod($age);
 
     $res = '<div class="graphDiv" style="height: 480px; width: 640px;">'."\n";
     $chart = new QColumnchartGoogleGraph;
