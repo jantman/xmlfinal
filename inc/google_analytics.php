@@ -27,8 +27,8 @@
 // +----------------------------------------------------------------------+
 // | Authors: Jason Antman <jason@jasonantman.com>                        |
 // +----------------------------------------------------------------------+
-// | $LastChangedRevision:: 6                                           $ |
-// | $HeadURL:: http://svn.jasonantman.com/xmlfinal/inc/google_webmaste#$ |
+// | $LastChangedRevision::                                             $ |
+// | $HeadURL::                                                         $ |
 // +----------------------------------------------------------------------+
 
 require_once('Zend/Gdata.php');

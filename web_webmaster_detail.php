@@ -27,11 +27,11 @@
 // +----------------------------------------------------------------------+
 // | Authors: Jason Antman <jason@jasonantman.com>                        |
 // +----------------------------------------------------------------------+
-// | $LastChangedRevision:: 7                                           $ |
-// | $HeadURL:: http://svn.jasonantman.com/xmlfinal/web_webmaster.php   $ |
+// | $LastChangedRevision::                                             $ |
+// | $HeadURL::                                                         $ |
 // +----------------------------------------------------------------------+
-$SVN_rev = "\$LastChangedRevision: 31 $";
-$SVN_headURL = "\$HeadURL: http://svn.jasonantman.com/ncd/index.php $";
+$SVN_rev = "\$LastChangedRevision$";
+$SVN_headURL = "\$HeadURL$";
 
 require_once('config/config.php');
 require_once('inc/common.php');
