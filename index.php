@@ -30,6 +30,9 @@
 // | $LastChangedRevision::                                             $ |
 // | $HeadURL::                                                         $ |
 // +----------------------------------------------------------------------+
+$SVN_rev = "\$LastChangedRevision$";
+$SVN_headURL = "\$HeadURL$";
+
 require_once('config/config.php');
 require_once('inc/common.php');
 ?>
@@ -55,10 +58,10 @@ require_once('inc/common.php');
 
 <table class="minorTable">
 <tr><th>Page</th><th>Data Source</th><th>XML Feed/Service</th><th>Data Source Status</th><th>Page Status</th></tr>
-<tr><td><a href="logs_spam.php">spamd (SpamAssassin) logs</a></td><td>MySQL (local)</td><td><a href="http://code.google.com/apis/visualization/">Google Visualization</a> (<a href="http://www.phpclasses.org/browse/package/4665.html">PHP wrapper class</a>)</td><td>OK.</td><td>Partially Implemented</td></tr>
-<tr><td><a href="logs_bind.php">bind (named) logs</a></td><td>MySQL (local)</td><td><a href="http://code.google.com/apis/visualization/">Google Visualization</a> (<a href="http://www.phpclasses.org/browse/package/4665.html">PHP wrapper class</a>)</td><td><em>FUBAR</em></td><td>Partially Implemented</td></tr>
-<tr><td><a href="web_webmaster.php">Webmaster Tools</a></td><td>&nbsp;</td><td><a href="http://code.google.com/apis/webmastertools/">Google Webmaster Tools API</a></td><td>OK</td><td>Partial</td></tr>
-<tr><td><a href="web_analytics.php">Google Analytics</a></td><td>&nbsp;</td><td>API - <a href="http://code.google.com/apis/analytics/">Google Analytics</a> XML raw data, <a href="http://code.google.com/apis/visualization/">Google Visualization</a> (<a href="http://www.phpclasses.org/browse/package/4665.html">PHP wrapper class</a>)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td><a href="logs_spam.php">spamd (SpamAssassin) logs</a></td><td>MySQL (local)</td><td><a href="http://code.google.com/apis/visualization/">Google Visualization</a> (<a href="http://www.phpclasses.org/browse/package/4665.html">PHP wrapper class</a>)</td><td>OK</td><td>Partially Implemented</td></tr>
+<tr><td><a href="logs_bind.php">bind (named) logs</a></td><td>MySQL (local)</td><td><a href="http://code.google.com/apis/visualization/">Google Visualization</a> (<a href="http://www.phpclasses.org/browse/package/4665.html">PHP wrapper class</a>)</td><td><em>OK</em></td><td>Partially Implemented</td></tr>
+<tr><td><a href="web_webmaster.php">Webmaster Tools</a></td><td>XML</td><td><a href="http://code.google.com/apis/webmastertools/">Google Webmaster Tools API</a></td><td>OK</td><td>Partially Implemented</td></tr>
+<tr><td><a href="web_analytics.php">Google Analytics</a></td><td>XML</td><td>API - <a href="http://code.google.com/apis/analytics/">Google Analytics</a> XML raw data, <a href="http://code.google.com/apis/visualization/">Google Visualization</a> (<a href="http://www.phpclasses.org/browse/package/4665.html">PHP wrapper class</a>)</td><td>OK</td><td>Partially Implemented</td></tr>
 <tr><td><a href="nagios.php">Nagios</a></td><td>Local XML</td><td><a href="http://svn.jasonantman.com/nagios-xml/">Nagios Status XML Feed generator</a></td><td>OK.</td><td>Done.</td></tr>
 </table>
 

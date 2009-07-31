@@ -1,5 +1,5 @@
 <?php
-// index.php
+// web_webmaster.php
 //
 // +----------------------------------------------------------------------+
 // | XML Final Project      http://xmlfinal.jasonantman.com               |
@@ -30,6 +30,9 @@
 // | $LastChangedRevision::                                             $ |
 // | $HeadURL::                                                         $ |
 // +----------------------------------------------------------------------+
+$SVN_rev = "\$LastChangedRevision$";
+$SVN_headURL = "\$HeadURL$";
+
 require_once('config/config.php');
 require_once('inc/common.php');
 ?>
@@ -39,7 +42,7 @@ require_once('inc/common.php');
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>XML Final</title>
+<title>Webmaster Tools</title>
 <link rel="stylesheet" type="text/css" href="css/common.css" />
 <link rel="stylesheet" type="text/css" href="css/nav.css" />
 </head>

@@ -1,5 +1,5 @@
 <?php
-// syslog_tail.php
+// web_webmaster_detail.php
 //
 // +----------------------------------------------------------------------+
 // | XML Final Project      http://xmlfinal.jasonantman.com               |
@@ -27,11 +27,11 @@
 // +----------------------------------------------------------------------+
 // | Authors: Jason Antman <jason@jasonantman.com>                        |
 // +----------------------------------------------------------------------+
-// | $LastChangedRevision::                                             $ |
-// | $HeadURL::                                                         $ |
+// | $LastChangedRevision:: 7                                           $ |
+// | $HeadURL:: http://svn.jasonantman.com/xmlfinal/web_webmaster.php   $ |
 // +----------------------------------------------------------------------+
-$SVN_rev = "\$LastChangedRevision$";
-$SVN_headURL = "\$HeadURL$";
+$SVN_rev = "\$LastChangedRevision: 31 $";
+$SVN_headURL = "\$HeadURL: http://svn.jasonantman.com/ncd/index.php $";
 
 require_once('config/config.php');
 require_once('inc/common.php');
@@ -42,7 +42,7 @@ require_once('inc/common.php');
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>XML Final</title>
+<title>Google Webmaster Tools Detail</title>
 <link rel="stylesheet" type="text/css" href="css/common.css" />
 <link rel="stylesheet" type="text/css" href="css/nav.css" />
 </head>
@@ -52,8 +52,85 @@ require_once('inc/common.php');
 
 <div id="content">
 
-<h3>Not implemented yet.</h3>
-<?php error_log("PAGE NOT IMPLEMENTED: ".$_SERVER["SCRIPT_FILENAME"]); ?>
+<h2>Google Webmaster Tools</h2>
+<h2><?php echo '<a href="'.$_GET['site'].'">'.$_GET['site'].'</a>';?></h2>
+
+<?php
+require_once('inc/google_data.php');
+$client = null;
+$auth_result = google_auth_start($CREDENTIAL_google_webmaster_user, $CREDENTIAL_google_webmaster_pass, "sitemaps", $client);
+if($auth_result != "success"){ echo $auth_result; printFooter(); }
+
+require_once('inc/google_webmaster.php');
+
+// sitemaps
+$foo = googlewebm_site_details($client, $_GET['site'], "sitemaps");
+
+echo '<h3>Sitemaps</h3>';
+
+echo '<table class="mainTable">'."\n";
+echo '<tr><th>URL</th><th>Type</th><th>Status</th><th>Last Downloaded</th><th>URL Count</th></tr>'."\n";
+if(count($foo) == 0)
+{
+    echo '<tr><td colspan="5" style="text-align: center; font-style: italic;"><span>None.</span></td></tr>'."\n";
+}
+else
+{
+    foreach($foo as $key => $arr)
+    {
+	echo '<tr>';
+	echo '<td><a href="'.$arr['type'].'">'.$arr['type'].'</a></td>';
+	echo '<td>'.$arr['sitemap-type'].'</td>';
+	echo '<td>'.$arr['sitemap-status'].'</td>';
+	echo '<td>'.$arr['sitemap-last-downloaded'].'</td>';
+	echo '<td>'.$arr['sitemap-url-count'].'</td>';
+	echo '</tr>'."\n";
+    }
+}
+echo '</table>'."\n";
+
+// messages
+echo '<h3>Messages</h3>';
+$foo = googlewebm_site_details($client, $_GET['site'], "messages");
+if(count($foo) == 0)
+{
+    echo '<p style="font-style: italic;">None.</p>'."\n";
+}
+else
+{
+    echo "<p>=========================\n";
+    echo var_dump($foo);
+    echo "=========================</p>\n";
+}
+
+// crawl issues
+$foo = googlewebm_site_details($client, $_GET['site'], "crawlissues");
+echo '<h3>Crawl Issues</h3>';
+
+echo '<table class="mainTable">'."\n";
+echo '<tr><th>Crawl Type</th><th>Issue Type</th><th>URL</th><th>Date Detected</th><th>Detail</th></tr>'."\n";
+if(count($foo) == 0)
+{
+    echo '<tr><td colspan="5" style="text-align: center; font-style: italic;"><span>None.</span></td></tr>'."\n";
+}
+else
+{
+    foreach($foo as $key => $arr)
+    {
+	echo '<tr>';
+	echo '<td>'.$arr['crawl-type'].'</td>';
+	echo '<td>'.$arr['issue-type'].'</td>';
+	echo '<td><a href="'.$arr['url'].'">'.$arr['url'].'</a></td>';
+	echo '<td>'.$arr['date-detected'].'</td>';
+	echo '<td>'.$arr['detail'].'</td>';
+	echo '</tr>'."\n";
+    }
+}
+echo '</table>'."\n";
+
+
+?>
+
 
 </div>
 

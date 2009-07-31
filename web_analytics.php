@@ -1,5 +1,5 @@
 <?php
-// index.php
+// web_analytics.php
 //
 // +----------------------------------------------------------------------+
 // | XML Final Project      http://xmlfinal.jasonantman.com               |
@@ -30,6 +30,9 @@
 // | $LastChangedRevision::                                             $ |
 // | $HeadURL::                                                         $ |
 // +----------------------------------------------------------------------+
+$SVN_rev = "\$LastChangedRevision$";
+$SVN_headURL = "\$HeadURL$";
+
 require_once('config/config.php');
 require_once('inc/common.php');
 ?>
@@ -54,13 +57,20 @@ require_once('inc/common.php');
 <?php
 
 require_once('inc/google_data.php');
+echo '<pre>';
 $client = null;
+echo "client=".gettype($client)."\n";
 $auth_result = google_auth_start($CREDENTIAL_google_webmaster_user, $CREDENTIAL_google_webmaster_pass, "analytics", $client);
+echo "client=".gettype($client)."\n";
 if($auth_result != "success"){ echo $auth_result; printFooter(); die(); }
+
+echo "client=".gettype($client)."\n";
 
 require_once('inc/google_analytics.php');
 googleana_update_sites($client, $CREDENTIAL_google_webmaster_user);
 $sites = googleana_list_sites();
+
+echo "client=".gettype($client)."\n";
 
 $first_site_id = "";
 
@@ -79,9 +89,9 @@ echo '</p>'."\n";
 <div id="analyticsContainer">
 
 <?php
-echo '<pre>';
+
 echo $first_site_id."\n";
-echo getGoogleAnaContent($client, $first_site_id);
+echo var_dump(getGoogleAnaContent($client, $first_site_id));
 echo '</pre>';
 ?>
 

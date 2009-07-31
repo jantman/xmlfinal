@@ -112,23 +112,6 @@ function getGoogleAnaContent($client, $siteID)
     $feed = google_get_feed($client, $url);
 
     return $feed;
-
-    foreach ($feed as $entry)
-    {
-	foreach($entry->extensionElements as $elem)
-	{
-	    if(trim((string)$elem->rootElement) == "tableId")
-	    {
-		$elem = (string)$elem;
-		$id = (int)trim(substr($elem, strpos($elem, ":")+1));
-		$query = "INSERT INTO ".$config_googleana_cache_table." SET name='".$entry->title->text."',id=".$id.",last_update_ts=".time()." ON DUPLICATE KEY UPDATE id=".$id.",last_update_ts=".time().";";
-		echo $query."\n";
-		$result = mysql_query($query) or dberror($query, mysql_error());
-	    }
-	}
-    }
-
-    return $res;
 }
 
 

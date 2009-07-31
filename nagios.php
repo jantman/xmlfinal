@@ -30,6 +30,9 @@
 // | $LastChangedRevision::                                             $ |
 // | $HeadURL::                                                         $ |
 // +----------------------------------------------------------------------+
+$SVN_rev = "\$LastChangedRevision$";
+$SVN_headURL = "\$HeadURL$";
+
 require_once('config/config.php');
 require_once('inc/common.php');
 ?>

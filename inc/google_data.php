@@ -104,7 +104,12 @@ function google_get_feed($client, $url)
     }
     catch (Zend_Gdata_App_HttpException $he)
 	{
-	    echo '<div class="errorDiv">Problem authenticating: ' . $he->getMessage() . "</div>\n";
+	    echo '<div class="errorDiv">Problem getting feed: ' . $he->getMessage() . "</div>\n";
+	    die(); // TODO - this should just return, and handle the error in the calling function
+	}
+    catch (Zend_Gdata_App_Exception $ae)
+	{
+	    echo '<div class="errorDiv">Problem getting feed: '.$ae->getMessage()."</div>\n";
 	    die(); // TODO - this should just return, and handle the error in the calling function
 	}
     return $feed;

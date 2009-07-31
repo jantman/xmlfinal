@@ -37,7 +37,7 @@
  * @param Zend_Http_Client $client an established authenticated connection to Google.
  * @return array
  */
-function googlewebm_list_sites($client)
+function googlewebm_list_sites(&$client)
 {
     $feed = google_get_feed($client, 'https://www.google.com/webmasters/tools/feeds/sites/');
 
@@ -56,5 +56,36 @@ function googlewebm_list_sites($client)
     return $res;
 }
 
+
+/** 
+ * Get the details of crawl issues as an array
+ * @param Zend_Http_Client $client an established authenticated connection to Google.
+ * @param string $siteID the site ID/URL
+ * @param string $feedType the typs of feed to get (sitemaps|messages|crawlissues)
+ * @return string
+ */
+function googlewebm_site_details(&$client, $site, $feedType = "sitemaps")
+{
+    if($feedType == "sitemaps"){ $url = "https://www.google.com/webmasters/tools/feeds/".urlencode($site)."/sitemaps/";}
+    elseif($feedType == "messages") { $url = "https://www.google.com/webmasters/tools/feeds/messages/";}
+    else { $url = "https://www.google.com/webmasters/tools/feeds/".urlencode($site)."/crawlissues/";}
+
+    $feed = google_get_feed($client, $url);
+
+    $res = array();
+
+    foreach ($feed as $entry)
+    {
+	$arr = array();
+	$arr['type'] = $entry->title->text;
+	foreach($entry->extensionElements as $elem)
+	{
+	    $arr[$elem->rootElement] = (string)$elem;
+	}
+	$res[] = $arr;
+    }
+
+    return $res;
+}
 
 ?>
