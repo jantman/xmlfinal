@@ -106,6 +106,7 @@ function printHeader()
 
 function printFooter()
 {
+    global $SVN_rev, $SVN_headURL;
     echo '<div id="footer">'."\n";
     if($_SERVER['REQUEST_URI'] != "/" && $_SERVER['REQUEST_URI'] != "/index.php")
     {
