@@ -1,5 +1,5 @@
 <?php
-// logs_spam.php
+// getChart.php
 //
 // +----------------------------------------------------------------------+
 // | XML Final Project      http://xmlfinal.jasonantman.com               |
@@ -37,65 +37,34 @@ require_once('config/config.php');
 require_once('inc/common.php');
 require_once('googlevis/config.inc.php');
 
+if(isset($_GET['page'])) { $page = $_GET['page']; }
+if(isset($_GET['type'])) { $type = $_GET['type']; }
+if(isset($_GET['view'])) { $view = $_GET['view']; }
+
+if($page == "spam")
+{
+    require_once("inc/spam_graphs.php");
+    echo '<!-- BEGIN ONE GRAPH -->'."\n";
+    echo '<div class="graphContainer" id="graphContainer1" style="height: 100%;">'."\n";
+    if($type == "percent")
+    {
+	echo spam_percentSpamGraph();
+    }
+    else
+    {
+	graphError();
+    }
+    echo '</div> <!-- close graphContainer Div -->'."\n";
+    echo '<!-- END ONE GRAPH -->'."\n";
+}
+else
+{
+    graphError();
+}
+
+function graphError()
+{
+    echo '<div class="errorDiv">ERROR: I\'m sorry, but it appears that this graph type is not defined or is not yet implemented.</div>'."\n";
+}
+
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Spam Stats</title>
-<link rel="stylesheet" type="text/css" href="css/common.css" />
-<link rel="stylesheet" type="text/css" href="css/nav.css" />
-<script language="javascript" type="text/javascript" src="inc/forms.js"></script>
-</head>
-
-<body>
-<?php printHeader(); ?>
-
-<div id="content">
-
-<h2>spamd stats</h2>
-
-<?php
-$conn = mysql_connect($config_spam_db_host, $config_spam_db_user, $config_spam_db_pass) or die("Unable to connect to MySQL database for SPAM.<br />");
-mysql_select_db($config_spam_db_name) or die("Unable to select database: ".$config_spam_db_name.".<br />");
-$query = "SELECT log_ts FROM messages WHERE DATE(FROM_UNIXTIME(log_ts))!= '2009-12-31' ORDER BY log_ts DESC LIMIT 1;";
-$result = mysql_query($query) or dberror($query, mysql_error());
-$row = mysql_fetch_assoc($result);
-$foo = $row['log_ts'];
-mysql_close($conn);
-?>
-
-<h3>mailmaster.jasonantman.com, data as of <?php echo date($config_header_date_format, $foo); ?></h3>
-
-<div>
-<label for="type">Type: </label>
-<select name="type" id="type" onchange="spamUpdate();">
-<option value="percent" selected="selected">Spam vs Ham</option>
-<option value="hour">Spam by Hour of Day</option>
-<option value="day">Spam by Day of Week</option>
-</select>
-<em>(changing selection populates the below (outlined blue) div for that zone)</em>
-</div>
-
-<div class="graphPageContainer" id="graphPageContainer">
-
-<?php require_once("inc/spam_graphs.php"); ?>
-
-<!-- BEGIN ONE GRAPH -->
-<div class="graphContainer" id="graphContainer1" style="height: 100%;">
-<?php
-echo spam_percentSpamGraph(604800); // 7 days
-?>
-</div> <!-- close graphContainer Div -->
-<!-- END ONE GRAPH -->
-
-</div> <!-- close graphPageContainer DIV -->
-
-</div> <!-- close content DIV -->
-
-<?php printFooter(); ?>
-</body>
-
-</html>

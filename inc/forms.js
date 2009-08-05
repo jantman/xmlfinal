@@ -1,7 +1,7 @@
 // forms.js
 //
 // +----------------------------------------------------------------------+
-// | MultiBindAdmin      http://multibindadmin.jasonantman.com            |
+// | XML Final Project      http://xmlfinal.jasonantman.com               |
 // +----------------------------------------------------------------------+
 // | Copyright (c) 2009 Jason Antman.                                     |
 // |                                                                      |
@@ -32,37 +32,35 @@
 
 var http = createRequestObject(); 
 
-function viewChange()
+function spamUpdate()
 {
-  if(document.getElementById("views_both").checked)
+  var foo = document.getElementById("type").value;
+  if(foo == "percent")
     {
-      document.getElementById("insideProviderDiv").style.display = 'block';
-      document.getElementById("outsideProviderDiv").style.display = 'block';
+      doHTTPrequest('getChart.php?page=spam&type=percent', handleUpdateGraphs);
     }
-  else if(document.getElementById("views_in").checked)
+  else if(foo == "hour")
     {
-      document.getElementById("insideProviderDiv").style.display = 'block';
-      document.getElementById("outsideProviderDiv").style.display = 'none';
+      doHTTPrequest('getChart.php?page=spam&type=hour', handleUpdateGraphs);
     }
   else
     {
-      document.getElementById("insideProviderDiv").style.display = 'none';
-      document.getElementById("outsideProviderDiv").style.display = 'block';
+      doHTTPrequest('getChart.php?page=spam&type=day', handleUpdateGraphs);
     }
 }
 
-function updateRRform()
-{
-  var v = document.getElementById("rr_type").value;
-  doHTTPrequest(('rrFormPart.php?type=' + v), handleUpdateRRform);
-}
-
-function handleUpdateRRform()
+function handleUpdateGraphs()
 {
   if(http.readyState == 4)
   {
     var response = http.responseText;
-    document.getElementById('rr_form_fields').innerHTML = response;
+    document.getElementById('graphPageContainer').innerHTML = response;
+    var div = document.getElementById('graphPageContainer');  
+    var x = div.getElementsByTagName("script");   
+    for(var i=0;i<x.length;i++)  
+    {
+      eval(x[i].text);  
+    }  
   }
 }
 

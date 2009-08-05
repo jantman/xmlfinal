@@ -37,15 +37,22 @@
  * @return string
  */
 
-function spam_percentSpamGraph($age = 604800)
+function spam_percentSpamGraph()
 {
+    global $config_spam_db_host, $config_spam_db_user, $config_spam_db_pass, $config_spam_db_name;
+    $conn = mysql_connect($config_spam_db_host, $config_spam_db_user, $config_spam_db_pass) or die("Unable to connect to MySQL database for SPAM.<br />");
+    mysql_select_db($config_spam_db_name) or die("Unable to select database: ".$config_spam_db_name.".<br />");
+
+    $age = -1;
     $timeperiod = ageToTimePeriod($age);
 
     $res = '<div class="graphDiv" style="height: 480px; width: 640px;">'."\n";
     $chart = new QAnnotatedtimelineGoogleGraph;
     $chart->addDrawProperties(array('title' => 'Percentage of Incoming Mail marked as Spam, last '.$timeperiod, 'width' => 640, 'height' => 480, 'titleY' => 'Percent Spam', 'titleX' => 'Date', "pointSize" => 0, "smoothLine" => true, "legend" => "none"));
 
-    $query = "SELECT DATE(FROM_UNIXTIME(log_ts)),COUNT(*),SUM(spamStatus) FROM messages WHERE DATE(FROM_UNIXTIME(log_ts))!= '2009-12-31' AND DATE(FROM_UNIXTIME(log_ts)) >= '".date("Y-m-d", (time() - $age))."' GROUP BY DATE(FROM_UNIXTIME(log_ts));";
+    $query = "SELECT DATE(FROM_UNIXTIME(log_ts)),COUNT(*),SUM(spamStatus) FROM messages WHERE DATE(FROM_UNIXTIME(log_ts))!= '2009-12-31' ";
+    if($age != -1){     $query .= "AND DATE(FROM_UNIXTIME(log_ts)) >= '".date("Y-m-d", (time() - $age))."'";}
+    $query .= "GROUP BY DATE(FROM_UNIXTIME(log_ts));";
 
     //echo '<p>'.$query.'</p>'."\n";
 
@@ -60,10 +67,16 @@ function spam_percentSpamGraph($age = 604800)
 	$values[] = array($count, 1, (((float)$row['SUM(spamStatus)']) / ((float)$row['COUNT(*)'])) * 100.0);
 	$count++;
     }
+    //echo '<pre>'; echo var_dump($values); echo '</pre>';
     $chart->setValues($values);
     $res .= $chart->render(false, true)."\n";
     $res .= '</div> <!-- close graphDiv -->'."\n";
+
+    mysql_close($conn);
+
     return $res;
 }
+
+
 
 ?>

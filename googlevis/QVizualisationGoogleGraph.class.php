@@ -414,7 +414,6 @@ class QVizualisationGoogleGraph extends QGoogleGraph {
 					}
 					if(substr($value[2],0,3)=='new'){
 						$value2 = $value[2];	
-						$i++;
 					} elseif(is_string($value[2])||is_bool($value[2])){
 						$value2 = "'".$value[2]."'";
 					} else {
