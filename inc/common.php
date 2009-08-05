@@ -116,7 +116,7 @@ function printFooter()
     echo '<p>Copyright 2009 <a href="http://www.jasonantman.com">Jason Antman</a> All Rights Reserved.<br />This project was written for a college course at Rutgers University, and incorporates software written by the author for other purposes, as well as software written by other parties.</p>.';
 
     echo 'Page Generated at '.date("Y-m-d H:i:s").' on '.$_SERVER['SERVER_NAME'].' ('.trim(exec("hostname")).')<br />'."\n";
-    echo 'File last modified at '.date("Y-m-d H:i:s", filemtime("/srv/www/vhosts/sandbox.jasonantman.com".$_SERVER["SCRIPT_NAME"]))."<br />\n";
+    echo 'File last modified at '.date("Y-m-d H:i:s", filemtime("/srv/www/vhosts/xmlfinal.jasonantman.com".$_SERVER["SCRIPT_NAME"]))."<br />\n";
     if(isset($SVN_rev) && isset($SVN_headURL)){ echo "Subversion Revision: ".stripSVNstuff($SVN_rev)." Head: <a href=\"".stripSVNstuff($SVN_headURL)."\">".stripSVNstuff($SVN_headURL)."</a>\n";}
     echo $_SERVER["SERVER_SIGNATURE"]."<br />"."\n";
     echo '</div> <!-- close footer DIV -->'."\n";
@@ -195,6 +195,18 @@ function ageToTimePeriod($age)
 	    return "30 Days";
     }
     return $age." seconds";
+}
+
+/**
+ * Return a string declaration of a JavaScript Date object for the specified date string (Y-m-d)
+ * @param int $s string Y-m-d
+ * @return string
+ */
+function makeJSDate($s)
+{
+    $foo = explode("-", $s);
+    $s = "new Date(".$foo[0].", ".$foo[1].", ".$foo[2].")";
+    return $s;
 }
 
 ?>

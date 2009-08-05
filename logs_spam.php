@@ -95,7 +95,7 @@ echo spam_percentSpamGraph(604800); // 7 days
 <!-- BEGIN ONE GRAPH -->
 <div class="graphContainer" id="graphContainer2" style="height: 100%;">
 <?php
-echo spam_percentSpamGraph(2592000); // 7 days
+//echo spam_percentSpamGraph(2592000); // 7 days
 ?>
 </div> <!-- close graphContainer Div -->
 <!-- END ONE GRAPH -->

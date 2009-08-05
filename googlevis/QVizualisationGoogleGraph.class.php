@@ -398,6 +398,31 @@ class QVizualisationGoogleGraph extends QGoogleGraph {
 			
 			switch($this->getContext()){
 				case "annotatedtimeline":
+					if(substr($value[0],0,3)=='new'){
+						$value0 = $value[0];	
+					} elseif(is_string($value[0])||is_bool($value[0])){
+						$value0 = "'".$value[0]."'";
+					} else {
+						$value0 = $value[0];
+					}
+					if(substr($value[1],0,3)=='new'){
+						$value1 = $value[1];	
+					} elseif(is_string($value[1])||is_bool($value[1])){
+						$value1 = "'".$value[1]."'";
+					} else {
+						$value1 = $value[1];
+					}
+					if(substr($value[2],0,3)=='new'){
+						$value2 = $value[2];	
+						$i++;
+					} elseif(is_string($value[2])||is_bool($value[2])){
+						$value2 = "'".$value[2]."'";
+					} else {
+						$value2 = (is_null($value[2])?'null':$value[2]);
+					}
+								
+					$this->putProperty("function", "data.setValue(".$value0.",".$value1.",".$value2.");");
+					break;
 				case "motionchart":
 					if(substr($value[0],0,3)=='new'){
 						$value0 = $value[0];	
