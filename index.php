@@ -52,7 +52,7 @@ require_once('inc/common.php');
 
 <div id="content">
 
-<p><a href="antman_final_proposal.pdf">PDF of proposal</a></p>
+<p>PDF of Proposal: <a href="antman_final_proposal.pdf">original</a> <a href="antman_final_proposal_revised.pdf">revised</a></p>
 
 <p>After doing the below storyboard as a base for the site (took screenshot of another site I did with this layout and changed text) I realized that it was taking me MUCH longer to edit things together in a paint program than it would to just do up some quick-and-dirty HTML. So, for the storyboards, I have non-functional, rough-layout-only versions of a few of the pages for this site. Obviously, the design is quite rough and missing many key elements (and Im not yet sure about the dual navigation menu setup). </p>
 
@@ -63,7 +63,6 @@ require_once('inc/common.php');
 <tr><td><a href="web_webmaster.php">Webmaster Tools</a></td><td>XML</td><td><a href="http://code.google.com/apis/webmastertools/">Google Webmaster Tools API</a></td><td>OK</td><td>Done</td><td>yes</td></tr>
 <tr><td><a href="web_analytics.php">Google Analytics</a></td><td>XML</td><td>API - <a href="http://code.google.com/apis/analytics/">Google Analytics</a> XML raw data, <a href="http://code.google.com/apis/visualization/">Google Visualization</a> (<a href="http://www.phpclasses.org/browse/package/4665.html">PHP wrapper class</a>)</td><td>OK</td><td>Done.</td><td>no</td></tr>
 <tr><td><a href="nagios.php">Nagios</a></td><td>Local XML</td><td><a href="http://svn.jasonantman.com/nagios-xml/">Nagios Status XML Feed generator</a></td><td>OK.</td><td>Done.</td><td>Yes</td></tr>
-<tr><td>Proposal update</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>not started</td><td>&nbsp;</td></tr>
 </table>
 
 <br /><br />
