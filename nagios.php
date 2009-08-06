@@ -48,27 +48,83 @@ require_once('inc/common.php');
 <!-- nagios-specific -->
 <link rel="stylesheet" type="text/css" href="css/systemStatus.css" />
 <!-- nagios-specific -->
+<script language="javascript" type="text/javascript" src="inc/forms.js"></script>
 </head>
 
 <body>
-<?php printHeader(); ?>
+<?php
+printHeader(); 
+if(isset($_GET['filter'])){ $filter = $_GET['filter'];}
+if(isset($_GET['host'])){ $host = $_GET['host'];}
+?>
 
 <div id="content">
 
 <h2>Nagios Current Problems</h2>
+
+<p><em><strong>Note:</strong> To limit load on the monitoring server, this example page is using a static copy of status.xml. The data is only updated every 30 minutes.</em></p>
 
 <?php
 require_once('inc/parseNagiosXML.php');
 
 
 echo getFieldDescriptionP();
+?>
+
+<div id="formDiv">
+<strong>Filter: </strong>
+<select name="filter" id="filter" onchange="updateHostDiv()">
+<?php
+if(isset($filter) && $filter == "host")
+{
+    echo '<option value="onlybad">Only Problems</option>';
+    echo '<option value="all">All</option>';
+    echo '<option value="host" selected="selected">Host</option>';
+}
+elseif(isset($filter) && $filter == "all")
+{
+    echo '<option value="onlybad">Only Problems</option>';
+    echo '<option value="all" selected="selected">All</option>';
+    echo '<option value="host">Host</option>';
+}
+else
+{
+    echo '<option value="onlybad" selected="selected">Only Problems</option>';
+    echo '<option value="all">All</option>';
+    echo '<option value="host">Host</option>';
+}
+echo '</select>'."\n";
+
+echo "\n".'<div id="hostDiv"';
+if(! isset($host)){ echo ' style="display: none;"';}
+echo '>'."\n";
+echo '<strong>Host: </strong>';
+echo '<select name="host" id="host">'."\n";
+foreach($hosts as $value)
+{
+    $name = $value->getElementsByTagName("host_name")->item(0)->nodeValue;
+    echo '<option value="'.$name.'">'.$name.'</option>';
+}
+echo "\n".'</select>'."\n";
+echo '</div> <!-- close hostDiv -->'."\n";
+?>
+</select>
+<p><a href="javascript:updateNagios()">Update</a>&nbsp;&nbsp;&nbsp;<a href="javascript:resetNagios()">Reset</a></p>
+
+</div> <!-- close formDiv -->
+
+<div id="nagiosContainer">
+<?php
 echo getProgramInfo();
 echo getTableHeader();
 echo getStatusTRs(true);
 echo getTableFooter();
 ?>
+</div> <!-- close nagiosContainer DIV -->
 
 </table>
+
+<p><em>Description:</em>On the Nagios server, the <a href="http://svn.jasonantman.com/nagios-xml/statusXML.php">statusXML.php</a> script parses the Nagios (v2 or v3) status.dat file into XML. On the web server, <a href="http://svn.jasonantman.com/nagios-xml/parseNagiosXML.php">parseNagiosXML.php</a> is used to parse the XML and return an associative array of values, which is used to populate the table.</p>
 
 </div>
 

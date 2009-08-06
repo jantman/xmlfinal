@@ -1,5 +1,5 @@
 <?php
-// config/config.php
+// nagiosTable.php
 //
 // +----------------------------------------------------------------------+
 // | XML Final Project      http://xmlfinal.jasonantman.com               |
@@ -27,32 +27,34 @@
 // +----------------------------------------------------------------------+
 // | Authors: Jason Antman <jason@jasonantman.com>                        |
 // +----------------------------------------------------------------------+
-// | $LastChangedRevision::                                             $ |
-// | $HeadURL::                                                         $ |
+// | $LastChangedRevision:: 8                                           $ |
+// | $HeadURL:: http://svn.jasonantman.com/xmlfinal/nagios.php          $ |
 // +----------------------------------------------------------------------+
+$SVN_rev = "\$LastChangedRevision: 8 $";
+$SVN_headURL = "\$HeadURL: http://svn.jasonantman.com/xmlfinal/nagios.php $";
 
+require_once('config/config.php');
+require_once('inc/common.php');
 
-$config_long_date_format = "Y-m-d H:i:s";
-$config_header_date_format = "Y-m-d";
+if(isset($_GET['filter'])){ $filter = $_GET['filter'];}
+if(isset($_GET['host'])){ $host = $_GET['host'];}
 
-$config_bind_db_host = "";
-$config_bind_db_user = "";
-$config_bind_db_pass = "";
-$config_bind_db_name = "bind_stats";
+require_once('inc/parseNagiosXML.php');
 
-$config_spam_db_host = "";
-$config_spam_db_user = "";
-$config_spam_db_pass = "";
-$config_spam_db_name = "spam_data";
-
-$config_googleana_cache_db_host = "";
-$config_googleana_cache_db_user = "";
-$config_googleana_cache_db_pass = "";
-$config_googleana_cache_db_name = "site";
-$config_googleana_cache_table = "googleana_sites";
-$config_googleana_cache_ttl = 86400;
-
-$config_nagios_xml_path = "http://mon1.jasonantman.com/status30min.xml";
-$config_nagios_host = "MON1";
+echo getProgramInfo();
+echo getTableHeader();
+if(! isset($filter))
+{
+    echo getStatusTRs(true);
+}
+elseif($filter == "all")
+{
+    echo getStatusTRs(false);
+}
+elseif($filter == "host")
+{
+    echo getHostTRs($host);
+}
+echo getTableFooter();
 
 ?>

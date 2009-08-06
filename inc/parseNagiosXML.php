@@ -1,5 +1,5 @@
 <?php
-// Time-stamp: "2009-07-30 10:04:41 jantman"
+// Time-stamp: "2009-08-06 11:46:44 jantman"
 // $Id$
 
 // inc/parseNagiosXML.php
@@ -172,6 +172,77 @@ function getStatusTRs($only_bad = false)
 	}
 
 	$total_hosts++;
+    }
+    return $str;
+}
+
+/**
+ * Gets the TRs for ONE host and services.
+ * @param $host string the host name
+ * @return string
+ */
+function getHostTRs($host) 
+{
+    global $doc, $hosts;
+    $only_bad = false;
+    $str = "";
+    $host_count = 0;
+    $total_hosts = 0;
+    $services = $doc->getElementsByTagName("services");
+    $services = $services->item(0)->getElementsByTagName("service");
+    $service_count = 0;
+    $total_services = 0;
+    // HOSTS
+    foreach($hosts as $value)
+    {
+	$str = "";
+	$name = $value->getElementsByTagName("host_name")->item(0)->nodeValue;
+	$status = $value->getElementsByTagName("current_state")->item(0)->nodeValue;
+	$plugin_output = $value->getElementsByTagName("plugin_output")->item(0)->nodeValue;
+	$last_check = $value->getElementsByTagName("last_check")->item(0)->nodeValue;
+	$last_state_change = $value->getElementsByTagName("last_state_change")->item(0)->nodeValue;
+	$ack = $value->getElementsByTagName("problem_has_been_acknowledged")->item(0)->nodeValue;
+	$last_update = $value->getElementsByTagName("last_update")->item(0)->nodeValue;
+	$exec_time = $value->getElementsByTagName("check_execution_time")->item(0)->nodeValue;
+	if($status != 0) { $host_count++;}
+
+	$hostStr = host_tr($name, $status, $plugin_output, $last_check, $last_state_change, $ack, $last_update, $exec_time);
+
+	// SERVICES
+	// parse the services
+	$servStr = "";
+	foreach($services as $serValue)
+	{
+	    $service_host = $serValue->getElementsByTagName("host_name")->item(0)->nodeValue;
+	    if($service_host == $name)
+	    {
+		if($status != 0) {$service_count++;}
+		$s_status = $serValue->getElementsByTagName("current_state")->item(0)->nodeValue;
+		$s_plugin_output = $serValue->getElementsByTagName("plugin_output")->item(0)->nodeValue;
+		$s_last_check = $serValue->getElementsByTagName("last_check")->item(0)->nodeValue;
+		$s_last_state_change = $serValue->getElementsByTagName("last_state_change")->item(0)->nodeValue;
+		$s_ack = $serValue->getElementsByTagName("problem_has_been_acknowledged")->item(0)->nodeValue;
+		$s_last_update = $serValue->getElementsByTagName("last_update")->item(0)->nodeValue;
+		$s_service_description = $serValue->getElementsByTagName("service_description")->item(0)->nodeValue;
+		$s_exec_time = $value->getElementsByTagName("check_execution_time")->item(0)->nodeValue;
+		if($only_bad == false || $s_status != 0)
+		{
+		    $servStr .= serv_tr($s_service_description, $s_status, $s_plugin_output, $s_last_check, $s_last_state_change, $s_ack, $s_last_update, $s_exec_time);
+		}
+		$total_services++;
+	    }
+	}
+	// END SERVICES
+
+	if($only_bad == false || $servStr != "")
+	{
+	    $str .= $hostStr;
+	    $str .= $servStr;
+	}
+	if($name == $host)
+	{
+	    return $str;
+	}
     }
     return $str;
 }

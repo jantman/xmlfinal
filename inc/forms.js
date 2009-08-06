@@ -32,6 +32,54 @@
 
 var http = createRequestObject(); 
 
+function updateHostDiv()
+{
+  var filter = document.getElementById("filter").value;
+  if(filter == "host")
+    {
+      document.getElementById("hostDiv").style.display = 'block';
+    }
+  else
+    {
+      document.getElementById("hostDiv").style.display = 'none';
+    }
+}
+
+function nagiosLoading()
+{
+  var foo = '<div style="text-align: center; background-color: #D8D8D8;"><h2>&nbsp;<br />Loading...</h2> <img src="bigrotation2.gif" width="32" height="32" alt="animation" /><h2>&nbsp;</h2></div>';
+  document.getElementById('nagiosContainer').innerHTML = foo;
+}
+
+function updateNagios()
+{
+  var filter = document.getElementById("filter").value;
+  var host = document.getElementById("host").value;
+  if(filter == "host")
+    {
+      nagiosLoading();
+      doHTTPrequest('nagiosTable.php?filter=host&host=' + escape(host), handleUpdateNagios);
+    }
+  else if(filter == "all")
+    {
+      nagiosLoading();
+      doHTTPrequest('nagiosTable.php?filter=all', handleUpdateNagios);
+    }
+  else
+    {
+      nagiosLoading();
+      doHTTPrequest('nagiosTable.php', handleUpdateNagios);
+    }
+}
+
+function resetNagios()
+{
+  document.getElementById("filter").selectedIndex = 0;
+  document.getElementById("hostDiv").style.display = 'none';
+  nagiosLoading();
+  doHTTPrequest('nagiosTable.php', handleUpdateNagios);
+}
+
 function spamUpdate()
 {
   var foo = document.getElementById("type").value;
@@ -61,6 +109,15 @@ function handleUpdateGraphs()
     {
       eval(x[i].text);  
     }  
+  }
+}
+
+function handleUpdateNagios()
+{
+  if(http.readyState == 4)
+  {
+    var response = http.responseText;
+    document.getElementById('nagiosContainer').innerHTML = response;
   }
 }
 
