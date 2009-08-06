@@ -67,6 +67,10 @@ require_once('inc/common.php');
 
 <br /><br />
 
+<p>To view the raw code, check out <a href="http://svn.jasonantman.com/xmlfinal/">raw SVN repository</a> or <a href="http://viewvc.jasonantman.com/cgi-bin/viewvc.cgi/xmlfinal/">ViewVC for history and diffs</a>.</p>
+
+<br /><br />
+
 <div><img src="main.jpeg" width="800" height="817" alt="main_storyboard" style="border: 2px solid black;" /></div>
 
 <br /><br />
