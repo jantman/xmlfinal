@@ -103,16 +103,126 @@ function googleana_list_sites()
  * @param int $siteID the profile ID
  * @return string
  */
-function getGoogleAnaContent($client, $siteID)
+function getGoogleAnaContent($client, $siteID, $query)
 {
     $res = "";
-    echo "client=$client,siteID=$siteID\n";
-    $url = "https://www.google.com/analytics/feeds/data?start-date=2009-07-01&end-date=2009-07-30&dimensions=ga:source,ga:medium&metrics=ga:visits,ga:bounces&sort=-ga:visits&filters=ga:medium%3D%3Dreferral&max-results=5&ids=ga:$siteID&prettyprint=true";
-    echo $url."\n";
+    $url = "https://www.google.com/analytics/feeds/data?$query&ids=ga:$siteID"; // &prettyprint=true
     $feed = google_get_feed($client, $url);
 
-    return $feed;
+    $res = array();
+
+    // DEBUG
+    foreach ($feed as $entry)
+    {
+	$arr = array();
+	foreach($entry->extensionElements as $elem)
+	{
+	    $foo = array();
+	    foreach($elem->extensionAttributes as $name => $ext)
+	    {
+		$foo[$name] = $ext["value"];
+	    }
+	    $arr[$elem->rootElement] = $foo;
+	}
+	$res[$entry->title->text] = $arr;
+
+    }
+
+    return $res;
 }
 
+function getPageViewsByCountry($client, $siteID, $start, $end)
+{
+    $googleQuery = "start-date=$start&end-date=$end&dimensions=ga:country&sort=ga:pageviews&metrics=ga:pageviews&max-results=1000";
+
+    require_once('iso3166.php');
+
+    $ret = array();
+
+    $foo = getGoogleAnaContent($client, $siteID, $googleQuery);
+    foreach($foo as $title => $arr)
+    {
+	$country = $ret[$arr['dimension']['value']];
+	if(isset($_ISO3166["country_to_code"][strtoupper($country)]))
+	{
+	    $ret[$_ISO3166["country_to_code"][strtoupper($country)]] = $arr['metric']['value'];
+	}
+    }
+    return $ret;
+}
+
+function getPageViewsByLatLong($client, $siteID, $start, $end)
+{
+    $googleQuery = "start-date=$start&end-date=$end&dimensions=ga:latitude,ga:longitude&sort=ga:pageviews&metrics=ga:pageviews&max-results=1000";
+
+    $ret = array();
+
+    $foo = getGoogleAnaContent($client, $siteID, $googleQuery);
+    foreach($foo as $title => $arr)
+    {
+	$bar = explode("|", $title);
+	$bar[0] = trim(substr($bar[0], strpos($bar[0], "=")+1));
+	$bar[1] = trim(substr($bar[1], strpos($bar[1], "=")+1));
+	$baz = array("lat" => $bar[0], "long" => $bar[1], "pageviews" => $arr["metric"]["value"]);
+	$ret[] = $baz;
+    }
+    return $ret;
+}
+
+function makeGoogleMapXML($arr)
+{
+    // Start XML file, create parent node
+    $xmltext = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<markers></markers>";
+    $xmlobj = simplexml_load_string($xmltext);
+
+    foreach($arr as $key => $vals)
+    {
+	$node = $xmlobj->addChild("marker");
+
+	$node->addChild("lat", $vals['lat']);
+	$node->addChild("lng", $vals['long']);
+	$node->addChild("type", "place");
+	$node->addChild("tooltip", $vals['pageviews']." views");
+    }
+    
+    $xmlfile = $xmlobj->asXML();
+    return $xmlfile;
+}
+
+function loadGoogleMapXML($file)
+{
+    $s = simplexml_load_file($file);
+    $arr = array();
+    foreach($s->marker as $marker)
+    {
+	$foo = array("lat" => $marker->lat, "long" => $marker->lng, "type" => $marker->type, "tooltip" => $marker->tooltip);
+	$arr[] = $foo;
+    }
+    return $arr;
+}
+
+function google_intensitymap($div_name, $values, $xlabel, $ylabel)
+{
+    $s = "<script type='text/javascript' src='http://www.google.com/jsapi'></script>\n";
+    $s .= "<script type='text/javascript'>\n";
+    $s .= "google.load('visualization', '1', {packages:['intensitymap']});\n";
+    $s .= "google.setOnLoadCallback(drawChart);\n";
+    $s .= "function drawChart() {\n";
+    $s .= "var data = new google.visualization.DataTable();\n";
+    $s .= "data.addColumn('string', '', '".$xlabel."');\n";
+    $s .= "data.addColumn('number', '".$ylabel."', 'a');\n";
+    $s .= "data.addRows(".count($values).");\n";
+    foreach($values as $label => $val)
+    {
+        $s .= "data.setValue(0, 0, '".$label."');\n";
+        $s .= "data.setValue(0, 1, ".$val.");\n";
+    }
+
+    $s .= "var chart = new google.visualization.IntensityMap(document.getElementById('".$div_name."'));\n";
+    $s .= "chart.draw(data, {});\n";
+    $s .= "}\n";
+    $s .= "</script>\n";
+    return $s;
+}
 
 ?>

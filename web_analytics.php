@@ -33,8 +33,13 @@
 $SVN_rev = "\$LastChangedRevision$";
 $SVN_headURL = "\$HeadURL$";
 
+$start = "2009-07-01";
+$end = "2009-07-30";
+
 require_once('config/config.php');
 require_once('inc/common.php');
+require_once('/srv/www/APIkeys.php');
+require_once('inc/google_analytics.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -45,58 +50,109 @@ require_once('inc/common.php');
 <title>Google Analytics</title>
 <link rel="stylesheet" type="text/css" href="css/common.css" />
 <link rel="stylesheet" type="text/css" href="css/nav.css" />
+<?php
+
+require_once('inc/google_data.php');
+$client = null;
+$auth_result = google_auth_start($CREDENTIAL_google_webmaster_user, $CREDENTIAL_google_webmaster_pass, "analytics", $client);
+if($auth_result != "success"){ echo $auth_result; printFooter(); die(); }
+googleana_update_sites($client, $CREDENTIAL_google_webmaster_user);
+$sites = googleana_list_sites();
+$first_site_id = "";
+foreach($sites as $name => $id)
+{
+    if($first_site_id==""){ $first_site_id = $id;}
+}
+
+require_once('googlemaps/GoogleMapAPI.class.php');
+$map = new GoogleMapAPI('map');
+$map->disableSidebar();
+$map->setHeight('500px');
+$map->setWidth('800px');
+$map->setAPIKey($APIKEY_google_maps);
+$map->printHeaderJS();
+
+// check map XML, if it's old then redo it
+if(! file_exists('visitormap.xml') || filemtime('visitormap.xml') < (time() - 3600))
+{
+    $fh = fopen('visitormap.xml', "w");
+    $foo = getPageViewsByLatLong($client, $first_site_id, $start, $end);
+    fwrite($fh, makeGoogleMapXML($foo));
+    fclose($fh);
+}
+
+$foo = loadGoogleMapXML('visitormap.xml');
+
+// create some map markers
+foreach($foo as $arr)
+{
+    $map->addMarkerByCoords($arr['long'],$arr['lat'], $tooltip = $arr['tooltip']);
+}
+
+$map->printMapJS();
+
+$countryVals = getPageViewsByCountry($client, $first_site_id, $start, $end);
+echo google_intensitymap("analytics2", $countryVals, "Country", "Page Views");
+
+?>
 </head>
 
-<body>
+<body onload="onLoad()">
 <?php printHeader(); ?>
 
 <div id="content">
 
-<h3>Analytics</h3>
-
-<?php
-
-require_once('inc/google_data.php');
-echo '<pre>';
-$client = null;
-echo "client=".gettype($client)."\n";
-$auth_result = google_auth_start($CREDENTIAL_google_webmaster_user, $CREDENTIAL_google_webmaster_pass, "analytics", $client);
-echo "client=".gettype($client)."\n";
-if($auth_result != "success"){ echo $auth_result; printFooter(); die(); }
-
-echo "client=".gettype($client)."\n";
-
-require_once('inc/google_analytics.php');
-googleana_update_sites($client, $CREDENTIAL_google_webmaster_user);
-$sites = googleana_list_sites();
-
-echo "client=".gettype($client)."\n";
-
-$first_site_id = "";
-
-echo '<p>'."\n";
-echo '<label for="siteID">Site: </label><select name="site" id="site">';
-foreach($sites as $name => $id)
-{
-    echo '<option value="'.$id.'">'.$name.'</option>';
-    if($first_site_id==""){ $first_site_id = $id;}
-}
-echo '</select>'."\n";
-echo '</p>'."\n";
-
-?>
+<h2>Analytics</h2>
 
 <div id="analyticsContainer">
-
+<h3>Page Views by location, last 30 days - JasonAntman.com</h3>
 <?php
 
-echo $first_site_id."\n";
-echo var_dump(getGoogleAnaContent($client, $first_site_id));
+/*
+echo '<pre>';
+
+$googleQuery = "start-date=$start&end-date=$end&dimensions=ga:source,ga:medium&metrics=ga:visits&sort=-ga:visits&max-results=500";
+$googleQuery = "start-date=$start&end-date=$end&dimensions=ga:latitude,ga:longitude&sort=ga:pageviews&metrics=ga:pageviews&max-results=1000";
+getGoogleAnaContent($client, $first_site_id, $googleQuery);
 echo '</pre>';
+*/
+
+
+/* possible dimensions:
+ga:browser
+city
+connectionSpeed
+countOfVisits
+date
+daysSinceLastVisit
+kour
+language
+latitude,longitude
+operatingSystem
+screenResolution
+visitorType
+*/
+
+
+$map->printMap();
+
+
+echo '<p><em>Description: This page pulls data from the <a href="http://code.google.com/apis/analytics/">Google Analytics</a> raw data XML API on load (at most once per hour) and dumps the necessary data into an XML file. At each load, it parses the XML and uses Monte Ohrt\'s <a href="http://www.phpinsider.com/php/code/GoogleMapAPI/">PHP GoogleMapAPI</a> to generate a Google Map.</em></p>';
 ?>
 
 </div> <!-- END analyticsContainer DIV -->
 
+<h3>Page Views by Country, last 30 days - JasonAntman.com</h3>
+<div id="analytics2">
+
+<?php
+//echo '<pre>';
+//$foo = getPageViewsByCountry($client, $first_site_id, $start, $end);
+//echo var_dump($foo);
+//echo '</pre>';
+?>
+
+</div> <!-- END analytics2 DIV -->
 
 </div>
 
