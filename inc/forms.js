@@ -31,6 +31,7 @@
 // +----------------------------------------------------------------------+
 
 var http = createRequestObject(); 
+var spamtype = "percent";
 
 function updateHostDiv()
 {
@@ -105,14 +106,17 @@ function spamUpdate()
   spamLoading();
   if(foo == "percent")
     {
+      spamtype = "percent";
       doHTTPrequest('getChart.php?page=spam&type=percent', handleUpdateGraphs);
     }
   else if(foo == "hour")
     {
+      spamtype = "hour";
       doHTTPrequest('getChart.php?page=spam&type=hour', handleUpdateGraphs);
     }
   else
     {
+      spamtype = "day";
       doHTTPrequest('getChart.php?page=spam&type=day', handleUpdateGraphs);
     }
 }
@@ -122,7 +126,14 @@ function handleUpdateGraphs()
   if(http.readyState == 4)
   {
     var response = http.responseText;
-    document.getElementById('graphPageContainer').innerHTML = '<div id="linechart"></div>';
+    if(spamtype == "percent")
+      {
+	document.getElementById('graphPageContainer').innerHTML = '<div id="annotatedtimeline" style="width:740px;height:240px;"></div>';
+      }
+    else
+      {
+	document.getElementById('graphPageContainer').innerHTML = '<div id="linechart"></div>';
+      }
     eval(response);
   }
 }

@@ -113,6 +113,9 @@ foreach($foo as $name => $arr)
 
 </table>
 
+<p><em><strong>Description:</strong> This pulls data in real time from the Google Webmaster Tools XML API.</em></p>
+
+
 </div>
 
 <?php printFooter(); ?>

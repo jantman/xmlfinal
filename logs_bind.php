@@ -46,6 +46,7 @@ require_once('inc/common.php');
 <title>Bind Stats</title>
 <link rel="stylesheet" type="text/css" href="css/common.css" />
 <link rel="stylesheet" type="text/css" href="css/nav.css" />
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 </head>
 
 <body>
@@ -54,6 +55,7 @@ require_once('inc/common.php');
 <div id="content">
 
 <h2>BIND statistics</h2>
+<p>Nagios: <a href="nagios.php?filter=host&host=svcs1">svcs1 (NS1)</a>&nbsp;&nbsp;&nbsp;<a href="nagios.php?filter=host&host=WEB2">web2 (NS2)</a></p>
 
 <?php
 require_once('googlevis/config.inc.php');
@@ -62,37 +64,6 @@ mysql_select_db($config_bind_db_name) or die("Unable to select database: ".$conf
 
 ?>
 
-<div>
-<label for="zone">Site: </label>
-<select name="zone" id="zone">
-<option value="all">ALL ZONES</option>
-<option value="1">1.example.com</option>
-<option value="2">2.example.com</option>
-<option value="3">3.example.com</option>
-<option value="4">4.example.com</option>
-<option value="5">5.example.com</option>
-</select>
-<em>(changing selection populates the below (outlined blue) div for that zone)</em>
-</div>
-
-<div>
-<label for="view">View: </label>
-<input type="radio" name="view" id="view_both" checked="checked" /><label for="view_both">Both</label>
-<input type="radio" name="view" id="view_inside" /><label for="view_inside">Inside</label>
-<input type="radio" name="view" id="view_outside" /><label for="view_outside">Outside</label>
-<em>(changing selection populates the below (outlined blue) div for that view)</em>
-</div>
-
-<div>
-<label for="comparison">Comparison: </label>
-<br />
-<input type="radio" name="comparison" id="comparison_dayweek" checked="checked" /><label for="comparison_dayweek">Comarison of all NSs, 24 hours and 7 days, by NS</label>
-<br />
-<input type="radio" name="comparison" id="comparison_week" /><label for="comparison_inside">All NSs, last 7 days and last year, by NS</label>
-<br />
-<input type="radio" name="comparison" id="comparison_zone" /><label for="comparison_zone">Comarison of all NSs, 24 hours and 7 days, by Zone</label>
-<em>(changing selection populates the below (outlined blue) div for that comparison)</em>
-</div>
 
 <div class="graphPageContainer">
 

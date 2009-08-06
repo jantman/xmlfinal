@@ -103,7 +103,9 @@ echo '<select name="host" id="host">'."\n";
 foreach($hosts as $value)
 {
     $name = $value->getElementsByTagName("host_name")->item(0)->nodeValue;
-    echo '<option value="'.$name.'">'.$name.'</option>';
+    echo '<option value="'.$name.'"';
+    if(isset($host) && $host == $name){ echo ' selected="selected"';}
+    echo '>'.$name.'</option>';
 }
 echo "\n".'</select>'."\n";
 echo '</div> <!-- close hostDiv -->'."\n";
@@ -117,7 +119,14 @@ echo '</div> <!-- close hostDiv -->'."\n";
 <?php
 echo getProgramInfo();
 echo getTableHeader();
-echo getStatusTRs(true);
+if(isset($host))
+{
+    echo getHostTRs($host);
+}
+else
+{
+    echo getStatusTRs(true);
+}
 echo getTableFooter();
 ?>
 </div> <!-- close nagiosContainer DIV -->

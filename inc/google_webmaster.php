@@ -91,7 +91,7 @@ function googlewebm_site_details(&$client, $site, $feedType = "sitemaps")
 function googlewebm_show_details($id)
 {
     $s = "";
-    $s .= '<h2><a href="'.$id.'">'.$id.'</a></h2>';
+    $s .= '<p><strong><a href="'.$id.'">'.$id.'</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;<a href="nagios.php?filter=host&host=WEB1">nagios for host</a></p>';
 
     require_once('inc/google_data.php');
     $client = null;

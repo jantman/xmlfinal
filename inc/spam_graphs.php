@@ -46,15 +46,14 @@ function spam_percentSpamGraph()
     $age = -1;
     $timeperiod = ageToTimePeriod($age);
 
-    $res = '<div class="graphDiv" style="height: 480px; width: 640px;">'."\n";
+    $res = "";
     $chart = new QAnnotatedtimelineGoogleGraph;
+    $chart->ignoreContainer();
     $chart->addDrawProperties(array('title' => 'Percentage of Incoming Mail marked as Spam, last '.$timeperiod, 'width' => 640, 'height' => 480, 'titleY' => 'Percent Spam', 'titleX' => 'Date', "pointSize" => 0, "smoothLine" => true, "legend" => "none", "allValuesSuffix" => "%", ));
 
     $query = "SELECT DATE(FROM_UNIXTIME(log_ts)),COUNT(*),SUM(spamStatus) FROM messages WHERE DATE(FROM_UNIXTIME(log_ts))!= '2009-12-31' ";
     if($age != -1){     $query .= "AND DATE(FROM_UNIXTIME(log_ts)) >= '".date("Y-m-d", (time() - $age))."'";}
     $query .= "GROUP BY DATE(FROM_UNIXTIME(log_ts));";
-
-    //echo '<p>'.$query.'</p>'."\n";
 
     $chart->addColumns(array(array('date', 'Date'),array('number', 'Spam Percent')));
     
@@ -67,13 +66,10 @@ function spam_percentSpamGraph()
 	$values[] = array($count, 1, (((float)$row['SUM(spamStatus)']) / ((float)$row['COUNT(*)'])) * 100.0);
 	$count++;
     }
-    //echo '<pre>'; echo var_dump($values); echo '</pre>';
     $chart->setValues($values);
     $res .= $chart->render(false, true)."\n";
-    $res .= '</div> <!-- close graphDiv -->'."\n";
-
-    mysql_close($conn);
-
+    $res = str_replace('<script type="text/javascript">', "", $res);
+    $res = str_replace('</script>', "", $res);
     return $res;
 }
 
@@ -86,7 +82,7 @@ function spam_byHour()
     $age = -1;
     $timeperiod = ageToTimePeriod($age);
 
-    $res = '<div class="graphDiv" style="height: 480px; width: 640px;">'."\n";
+    $res = '';
     $chart = new QLinechartGoogleGraph;
     $chart->addDrawProperties(array('title' => 'Spam Messages by Hour of Day (for all time)', 'isStacked' => 'true', 'width' => 640, 'height' => 480, 'titleY' => 'Number of Messages', 'titleX' => 'Hour of Day', 'legend' => 'none'));
 
@@ -104,8 +100,10 @@ function spam_byHour()
 	$count++;
     }
     $chart->setValues($values);
+    $chart->ignoreContainer();
     $res .= $chart->render(false, true)."\n";
-    $res .= '</div> <!-- close graphDiv -->'."\n";
+    $res = str_replace('<script type="text/javascript">', "", $res);
+    $res = str_replace('</script>', "", $res);
     return $res;
 }
 

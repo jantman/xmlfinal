@@ -86,12 +86,12 @@ mysql_close($conn);
 <!-- BEGIN ONE GRAPH -->
 <div class="graphContainer" id="graphContainer1" style="height: 100%;">
 <?php
-//echo spam_percentSpamGraph(604800); // 7 days
-//echo spam_byHour();
 echo '<div class="graphDiv" style="height: 480px; width: 640px;">';
-echo '<div id="linechart"></div>'."\n";
+echo '<div id="linechart"></div><div id="annotatedtimeline" style="width:740px;height:240px;"></div>'."\n";
 echo '<script type="text/javascript">';
-echo spam_byDay();
+echo spam_percentSpamGraph(604800);
+//echo spam_byDay();
+//echo spam_byHour();
 echo '</script>';
 echo '</div> <!-- close graphDiv -->'."\n";
 ?>
