@@ -54,6 +54,13 @@ require_once('inc/common.php');
 
 <h3>Google Webmaster Tools</h3>
 
+<ul>
+<li><strong>Site</strong> - site name, link to DHTML popup with detailed site information</li>
+<li><strong>Sitemaps</strong> - yes/no, link adds td with colspan=4 to table showing detailed sitemap information, link to add or remove site maps</li>
+<li><strong>Messages</strong> - shows number of messages waiting in Webmaster Tools, link to DHTML popup that lists all messages and subjects. Each message within the popup has a link that will reload the popup with the message text.</li>
+<li><strong>Crawl Errors</strong> - lists number of issues found while crawling. clicking on the number of issues (link) adds a full width TD below the current row in the table, showing all crawl issues.</li>
+</ul>
+
 <table class="mainTable">
 <tr><th>Site</th><th>Google Data</th><th>Indexed</th><th>Crawled</th><th>Crawl Rate</th><th>Verified</th></tr>
 
@@ -63,6 +70,9 @@ require_once('inc/google_data.php');
 $client = null;
 $auth_result = google_auth_start($CREDENTIAL_google_webmaster_user, $CREDENTIAL_google_webmaster_pass, "sitemaps", $client);
 if($auth_result != "success"){ echo $auth_result; printFooter(); }
+
+$conn = mysql_connect($config_bind_db_host, $config_bind_db_user, $config_bind_db_pass) or die("Unable to connect to MySQL database for BIND.<br />");
+mysql_select_db('site') or die("Unable to select database: site.<br />");
 
 require_once('inc/google_webmaster.php');
 $foo = googlewebm_list_sites($client);
@@ -90,6 +100,10 @@ foreach($foo as $name => $arr)
     if(isset($arr['verified'])){ echo '<td>yes</td>';} else { echo '<td><strong>NO</strong></td>';}
 
     echo '</tr>'."\n";
+
+    $query = "INSERT INTO webmaster_tools SET id='".mysql_real_escape_string($name)."',title='".mysql_real_escape_string($name)."';";
+    $result = mysql_query($query);
+
 }
 
 
@@ -98,13 +112,6 @@ foreach($foo as $name => $arr)
 
 
 </table>
-
-<ul>
-<li><strong>Site</strong> - site name, link to DHTML popup with detailed site information</li>
-<li><strong>Sitemaps</strong> - yes/no, link adds td with colspan=4 to table showing detailed sitemap information, link to add or remove site maps</li>
-<li><strong>Messages</strong> - shows number of messages waiting in Webmaster Tools, link to DHTML popup that lists all messages and subjects. Each message within the popup has a link that will reload the popup with the message text.</li>
-<li><strong>Crawl Errors</strong> - lists number of issues found while crawling. clicking on the number of issues (link) adds a full width TD below the current row in the table, showing all crawl issues.</li>
-</ul>
 
 </div>
 

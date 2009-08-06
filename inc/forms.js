@@ -45,10 +45,29 @@ function updateHostDiv()
     }
 }
 
+function updateWebmaster()
+{
+  var site = document.getElementById("site").value;
+  webmasterLoading();
+  doHTTPrequest('webmasterTools.php?site=' + site, handleUpdateWebmaster);  
+}
+
 function nagiosLoading()
 {
   var foo = '<div style="text-align: center; background-color: #D8D8D8;"><h2>&nbsp;<br />Loading...</h2> <img src="bigrotation2.gif" width="32" height="32" alt="animation" /><h2>&nbsp;</h2></div>';
   document.getElementById('nagiosContainer').innerHTML = foo;
+}
+
+function webmasterLoading()
+{
+  var foo = '<div style="text-align: center; background-color: #D8D8D8;"><h2>&nbsp;<br />Loading...</h2> <img src="bigrotation2.gif" width="32" height="32" alt="animation" /><h2>&nbsp;</h2></div>';
+  document.getElementById('webmasterTools').innerHTML = foo;
+}
+
+function spamLoading()
+{
+  var foo = '<div style="text-align: center; background-color: #D8D8D8;"><h2>&nbsp;<br />Loading...</h2> <img src="bigrotation2.gif" width="32" height="32" alt="animation" /><h2>&nbsp;</h2></div>';
+  document.getElementById('graphPageContainer').innerHTML = foo;
 }
 
 function updateNagios()
@@ -83,6 +102,7 @@ function resetNagios()
 function spamUpdate()
 {
   var foo = document.getElementById("type").value;
+  spamLoading();
   if(foo == "percent")
     {
       doHTTPrequest('getChart.php?page=spam&type=percent', handleUpdateGraphs);
@@ -102,13 +122,8 @@ function handleUpdateGraphs()
   if(http.readyState == 4)
   {
     var response = http.responseText;
-    document.getElementById('graphPageContainer').innerHTML = response;
-    var div = document.getElementById('graphPageContainer');  
-    var x = div.getElementsByTagName("script");   
-    for(var i=0;i<x.length;i++)  
-    {
-      eval(x[i].text);  
-    }  
+    document.getElementById('graphPageContainer').innerHTML = '<div id="linechart"></div>';
+    eval(response);
   }
 }
 
@@ -118,6 +133,15 @@ function handleUpdateNagios()
   {
     var response = http.responseText;
     document.getElementById('nagiosContainer').innerHTML = response;
+  }
+}
+
+function handleUpdateWebmaster()
+{
+  if(http.readyState == 4)
+  {
+    var response = http.responseText;
+    document.getElementById('webmasterTools').innerHTML = response;
   }
 }
 

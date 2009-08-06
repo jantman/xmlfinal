@@ -1,5 +1,5 @@
 <?php
-// web_webmaster_detail.php
+// webmasterTools.php
 //
 // +----------------------------------------------------------------------+
 // | XML Final Project      http://xmlfinal.jasonantman.com               |
@@ -27,63 +27,18 @@
 // +----------------------------------------------------------------------+
 // | Authors: Jason Antman <jason@jasonantman.com>                        |
 // +----------------------------------------------------------------------+
-// | $LastChangedRevision::                                             $ |
-// | $HeadURL::                                                         $ |
+// | $LastChangedRevision:: 9                                           $ |
+// | $HeadURL:: http://svn.jasonantman.com/xmlfinal/web_webmaster_detai#$ |
 // +----------------------------------------------------------------------+
-$SVN_rev = "\$LastChangedRevision$";
-$SVN_headURL = "\$HeadURL$";
+$SVN_rev = "\$LastChangedRevision: 9 $";
+$SVN_headURL = "\$HeadURL: http://svn.jasonantman.com/xmlfinal/web_webmaster_detail.php $";
 
 require_once('config/config.php');
 require_once('inc/common.php');
 require_once('inc/google_webmaster.php');
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Google Webmaster Tools Detail</title>
-<link rel="stylesheet" type="text/css" href="css/common.css" />
-<link rel="stylesheet" type="text/css" href="css/nav.css" />
-<script language="javascript" type="text/javascript" src="inc/forms.js"></script>
-</head>
-
-<body>
-<?php printHeader(); ?>
-
-<div id="content">
-
-<h2>Google Webmaster Tools</h2>
-
-<?php
 
 $id = $_GET['site'];
 
-$conn = mysql_connect($config_bind_db_host, $config_bind_db_user, $config_bind_db_pass) or die("Unable to connect to MySQL database for BIND.<br />");
-mysql_select_db('site') or die("Unable to select database: site.<br />");
-
-echo '<select name="site" id="site" onchange="updateWebmaster()">'."\n";
-$query = "SELECT id FROM webmaster_tools;";
-$result = mysql_query($query);
-while($row = mysql_fetch_assoc($result))
-{
-    echo '<option value="'.urlencode($row['id']).'" ';
-    if($id == $row['id']){ echo 'selected="selected"';}
-    echo '>'.$row['id'].'</option>';
-}
-echo "\n".'</select>'."\n";
-
-echo '<div id="webmasterTools">'."\n";
 echo googlewebm_show_details($id);
-echo '</div> <!-- close webmasterTools DIV -->'."\n";
 
 ?>
-
-
-</div>
-
-<?php printFooter(); ?>
-</body>
-
-</html>

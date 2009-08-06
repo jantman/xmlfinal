@@ -44,18 +44,24 @@ if(isset($_GET['view'])) { $view = $_GET['view']; }
 if($page == "spam")
 {
     require_once("inc/spam_graphs.php");
-    echo '<!-- BEGIN ONE GRAPH -->'."\n";
-    echo '<div class="graphContainer" id="graphContainer1" style="height: 100%;">'."\n";
+
     if($type == "percent")
     {
 	echo spam_percentSpamGraph();
+    }
+    elseif($type == "hour")
+    {
+	echo spam_byHour();
+    }
+    elseif($type == "day")
+    {
+	echo spam_byDay();
     }
     else
     {
 	graphError();
     }
-    echo '</div> <!-- close graphContainer Div -->'."\n";
-    echo '<!-- END ONE GRAPH -->'."\n";
+
 }
 else
 {

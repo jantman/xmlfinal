@@ -106,8 +106,6 @@ echo bind_queryByHostType(604800); // 7 days
 </div> <!-- close graphContainer Div -->
 <!-- END ONE GRAPH -->
 
-<!-- <div class="clearing"></div> -->
-
 <!-- BEGIN ONE GRAPH -->
 <div class="graphContainer" id="graphContainer2" style="height: 100%;">
 <?php
@@ -117,6 +115,8 @@ echo bind_queryByHostType(86400); // 7 days
 <!-- END ONE GRAPH -->
 
 </div> <!-- close graphPageContainer DIV -->
+
+<div class="clearing"></div>
 
 </div> <!-- close content DIV -->
 

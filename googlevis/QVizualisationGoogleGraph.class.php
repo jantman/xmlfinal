@@ -121,9 +121,9 @@ class QVizualisationGoogleGraph extends QGoogleGraph {
 		// set api section
 		$this->object["api"] = new SimpleXMLElement($xml);
 		$api = $this->object["api"];
-		$apiscript = $api->addChild('script');
-		$apiscript->addAttribute("type", "text/javascript");
-		$apiscript->addAttribute("src", "http://www.google.com/jsapi");
+		//$apiscript = $api->addChild('script');
+		//$apiscript->addAttribute("type", "text/javascript");
+		//$apiscript->addAttribute("src", "http://www.google.com/jsapi");
 		
 		// set base section 
 		$this->object["base"] = new SimpleXMLElement($xml);

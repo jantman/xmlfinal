@@ -48,6 +48,7 @@ require_once('googlevis/config.inc.php');
 <link rel="stylesheet" type="text/css" href="css/common.css" />
 <link rel="stylesheet" type="text/css" href="css/nav.css" />
 <script language="javascript" type="text/javascript" src="inc/forms.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 </head>
 
 <body>
@@ -76,7 +77,6 @@ mysql_close($conn);
 <option value="hour">Spam by Hour of Day</option>
 <option value="day">Spam by Day of Week</option>
 </select>
-<em>(changing selection populates the below (outlined blue) div for that zone)</em>
 </div>
 
 <div class="graphPageContainer" id="graphPageContainer">
@@ -86,12 +86,21 @@ mysql_close($conn);
 <!-- BEGIN ONE GRAPH -->
 <div class="graphContainer" id="graphContainer1" style="height: 100%;">
 <?php
-echo spam_percentSpamGraph(604800); // 7 days
+//echo spam_percentSpamGraph(604800); // 7 days
+//echo spam_byHour();
+echo '<div class="graphDiv" style="height: 480px; width: 640px;">';
+echo '<div id="linechart"></div>'."\n";
+echo '<script type="text/javascript">';
+echo spam_byDay();
+echo '</script>';
+echo '</div> <!-- close graphDiv -->'."\n";
 ?>
 </div> <!-- close graphContainer Div -->
 <!-- END ONE GRAPH -->
 
 </div> <!-- close graphPageContainer DIV -->
+
+<p><em><strong>Description:</strong>This chart pulls data from a local MySQL data source and graphs it using Google Visualization. The only complaint that I have is that the Google Vis API does not seem to have a way to set the zoom to default to 1 month for the annotated timeline.</em></p>
 
 </div> <!-- close content DIV -->
 

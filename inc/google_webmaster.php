@@ -88,4 +88,81 @@ function googlewebm_site_details(&$client, $site, $feedType = "sitemaps")
     return $res;
 }
 
+function googlewebm_show_details($id)
+{
+    $s = "";
+    $s .= '<h2><a href="'.$id.'">'.$id.'</a></h2>';
+
+    require_once('inc/google_data.php');
+    $client = null;
+    $auth_result = google_auth_start($CREDENTIAL_google_webmaster_user, $CREDENTIAL_google_webmaster_pass, "sitemaps", $client);
+    if($auth_result != "success"){ $s .= $auth_result; printFooter(); }
+    
+// sitemaps
+    $foo = googlewebm_site_details($client, $id, "sitemaps");
+    
+    $s .= '<h3>Sitemaps</h3>';
+    
+    $s .= '<table class="mainTable">'."\n";
+    $s .= '<tr><th>URL</th><th>Type</th><th>Status</th><th>Last Downloaded</th><th>URL Count</th></tr>'."\n";
+    if(count($foo) == 0)
+    {
+	$s .= '<tr><td colspan="5" style="text-align: center; font-style: italic;"><span>None.</span></td></tr>'."\n";
+    }
+    else
+    {
+	foreach($foo as $key => $arr)
+	{
+	    $s .= '<tr>';
+	    $s .= '<td><a href="'.$arr['type'].'">'.$arr['type'].'</a></td>';
+	    $s .= '<td>'.$arr['sitemap-type'].'</td>';
+	    $s .= '<td>'.$arr['sitemap-status'].'</td>';
+	    $s .= '<td>'.$arr['sitemap-last-downloaded'].'</td>';
+	    $s .= '<td>'.$arr['sitemap-url-count'].'</td>';
+	    $s .= '</tr>'."\n";
+	}
+    }
+    $s .= '</table>'."\n";
+    
+// messages
+    $s .= '<h3>Messages</h3>';
+    $foo = googlewebm_site_details($client, $id, "messages");
+    if(count($foo) == 0)
+    {
+	$s .= '<p style="font-style: italic;">None.</p>'."\n";
+    }
+    else
+    {
+	$s .= "<p>=========================\n";
+	$s .= var_dump($foo);
+	$s .= "=========================</p>\n";
+    }
+    
+// crawl issues
+    $foo = googlewebm_site_details($client, $id, "crawlissues");
+    $s .= '<h3>Crawl Issues</h3>';
+    
+    $s .= '<table class="mainTable">'."\n";
+    $s .= '<tr><th>Crawl Type</th><th>Issue Type</th><th>URL</th><th>Date Detected</th><th>Detail</th></tr>'."\n";
+    if(count($foo) == 0)
+    {
+	$s .= '<tr><td colspan="5" style="text-align: center; font-style: italic;"><span>None.</span></td></tr>'."\n";
+    }
+    else
+    {
+	foreach($foo as $key => $arr)
+	{
+	    $s .= '<tr>';
+	    $s .= '<td>'.$arr['crawl-type'].'</td>';
+	    $s .= '<td>'.$arr['issue-type'].'</td>';
+	    $s .= '<td><a href="'.$arr['url'].'">'.$arr['url'].'</a></td>';
+	    $s .= '<td>'.$arr['date-detected'].'</td>';
+	    $s .= '<td>'.$arr['detail'].'</td>';
+	    $s .= '</tr>'."\n";
+	}
+    }
+    $s .= '</table>'."\n";
+    return $s;
+}
+
 ?>
