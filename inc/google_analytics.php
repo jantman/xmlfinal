@@ -142,7 +142,7 @@ function getPageViewsByCountry($client, $siteID, $start, $end)
     $foo = getGoogleAnaContent($client, $siteID, $googleQuery);
     foreach($foo as $title => $arr)
     {
-	$country = $ret[$arr['dimension']['value']];
+	$country = $arr['dimension']['value'];
 	if(isset($_ISO3166["country_to_code"][strtoupper($country)]))
 	{
 	    $ret[$_ISO3166["country_to_code"][strtoupper($country)]] = $arr['metric']['value'];

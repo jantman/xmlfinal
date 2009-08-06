@@ -156,6 +156,8 @@ echo '<p><em>Description: This page pulls data from the <a href="http://code.goo
 
 </div>
 
+<p><em>Description: This pulls data from the <a href="http://code.google.com/apis/analytics/">Google Analytics</a> raw data XML API and charts it using the <a href="http://code.google.com/apis/visualization/documentation/gallery/intensitymap.html">Intensity Map</a> visualization. Unfortunately, the intensity scale is quite difficult to notice - in this particular set, the US has 606 hits and the UK, Germany, and a number of other countries have 90+ hits, though only the US stands out in the map.</em></p>
+
 <?php printFooter(); ?>
 </body>
 
