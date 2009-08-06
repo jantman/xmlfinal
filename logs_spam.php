@@ -37,6 +37,8 @@ require_once('config/config.php');
 require_once('inc/common.php');
 require_once('googlevis/config.inc.php');
 
+if(isset($_GET['type'])){ $type = $_GET['type'];} else { $type = "percent";}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -89,9 +91,18 @@ mysql_close($conn);
 echo '<div class="graphDiv" style="height: 480px; width: 640px;">';
 echo '<div id="linechart"></div><div id="annotatedtimeline" style="width:740px;height:240px;"></div>'."\n";
 echo '<script type="text/javascript">';
-echo spam_percentSpamGraph(604800);
-//echo spam_byDay();
-//echo spam_byHour();
+if($type == "percent")
+{
+    echo spam_percentSpamGraph(604800);
+}
+elseif($type == "day")
+{
+    echo spam_byDay();
+}
+else
+{
+    echo spam_byHour();
+}
 echo '</script>';
 echo '</div> <!-- close graphDiv -->'."\n";
 ?>

@@ -102,22 +102,26 @@ function resetNagios()
 
 function spamUpdate()
 {
+  // TODO: had to comment most of this out, DHTML wasn't working
   var foo = document.getElementById("type").value;
-  spamLoading();
+  //spamLoading();
   if(foo == "percent")
     {
       spamtype = "percent";
-      doHTTPrequest('getChart.php?page=spam&type=percent', handleUpdateGraphs);
+      //doHTTPrequest('getChart.php?page=spam&type=percent', handleUpdateGraphs);
+      window.location = "logs_spam.php?type=percent";
     }
   else if(foo == "hour")
     {
       spamtype = "hour";
-      doHTTPrequest('getChart.php?page=spam&type=hour', handleUpdateGraphs);
+      //doHTTPrequest('getChart.php?page=spam&type=hour', handleUpdateGraphs);
+      window.location = "logs_spam.php?type=hour";
     }
   else
     {
       spamtype = "day";
-      doHTTPrequest('getChart.php?page=spam&type=day', handleUpdateGraphs);
+      //doHTTPrequest('getChart.php?page=spam&type=day', handleUpdateGraphs);
+      window.location = "logs_spam.php?type=day";
     }
 }
 
