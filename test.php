@@ -1,11 +1,14 @@
 <?php
 
 echo '<pre>';
-$a = array(38.57, 6.17, 5.02, 4.58, 3.88, 3.69, 3.43, 2.54, 2.355, 1.527);
-foreach($a as $val)
+$s = simplexml_load_file('visitormap.xml');
+$arr = array();
+foreach($s->marker as $marker)
 {
-    echo $val." = ".log($val)."\n";
+    $foo = array("lat" => $marker->lat, "long" => $marker->lng, "type" => $marker->type, "tooltip" => $marker->tooltip);
+    echo $marker->views."\n";
 }
+
 echo '</pre>';
 
 ?>

@@ -191,6 +191,7 @@ function makeGoogleMapXML($arr)
 	$node->addChild("lng", $vals['long']);
 	$node->addChild("type", "place");
 	$node->addChild("tooltip", $vals['pageviews']." views");
+	$node->addChild("views", $vals['pageviews']);
     }
     
     $xmlfile = $xmlobj->asXML();
@@ -203,7 +204,7 @@ function loadGoogleMapXML($file)
     $arr = array();
     foreach($s->marker as $marker)
     {
-	$foo = array("lat" => $marker->lat, "long" => $marker->lng, "type" => $marker->type, "tooltip" => $marker->tooltip);
+	$foo = array("lat" => $marker->lat, "long" => $marker->lng, "type" => $marker->type, "tooltip" => $marker->tooltip, "views" => $marker->views);
 	$arr[] = $foo;
     }
     return $arr;

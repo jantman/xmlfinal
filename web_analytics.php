@@ -87,6 +87,22 @@ $foo = loadGoogleMapXML('visitormap.xml');
 foreach($foo as $arr)
 {
     $map->addMarkerByCoords($arr['long'],$arr['lat'], $tooltip = $arr['tooltip']);
+    if($arr['views'] <= 5)
+    {
+	$map->addMarkerIcon($iconImage = 'http://xmlfinal.jasonantman.com/img/largeTDBlueIcons/marker'.$arr['views'].'.png', $iconShadowImage = '', $iconAnchorX = 10, $iconAnchorY = 34);
+    }
+    elseif($arr['views'] <=12)
+    {
+	$map->addMarkerIcon($iconImage = 'http://xmlfinal.jasonantman.com/img/largeTDGreenIcons/marker'.$arr['views'].'.png', $iconShadowImage = '', $iconAnchorX = 10, $iconAnchorY = 34);
+    }
+    elseif($arr['views'] <= 20)
+    {
+	$map->addMarkerIcon($iconImage = 'http://xmlfinal.jasonantman.com/img/largeTDYellowIcons/marker'.$arr['views'].'.png', $iconShadowImage = '', $iconAnchorX = 10, $iconAnchorY = 34);
+    }
+    else
+    {
+	$map->addMarkerIcon($iconImage = 'http://xmlfinal.jasonantman.com/img/largeTDRedIcons/marker'.$arr['views'].'.png', $iconShadowImage = '', $iconAnchorX = 10, $iconAnchorY = 34);
+    }
 }
 
 $map->printMapJS();
@@ -137,7 +153,8 @@ visitorType
 $map->printMap();
 
 
-echo '<p><em>Description: This page pulls data from the <a href="http://code.google.com/apis/analytics/">Google Analytics</a> raw data XML API on load (at most once per hour) and dumps the necessary data into an XML file. At each load, it parses the XML and uses Monte Ohrt\'s <a href="http://www.phpinsider.com/php/code/GoogleMapAPI/">PHP GoogleMapAPI</a> to generate a Google Map.</em></p>';
+echo '<p><strong>Key:</strong> <img src="http://xmlfinal.jasonantman.com/img/largeTDBlueIcons/blank.png" width="20" height="34" /> Blue - 1-5 views. <img src="http://xmlfinal.jasonantman.com/img/largeTDGreenIcons/blank.png" width="20" height="34" /> Green - 6-12 views. <img src="http://xmlfinal.jasonantman.com/img/largeTDYellowIcons/blank.png" width="20" height="34" /> Yellow - 13-20 views. <img src="http://xmlfinal.jasonantman.com/img/largeTDRedIcons/blank.png" width="20" height="34" /> Red - 21+ views.</p>';
+echo '<p><em>Description: This page pulls data from the <a href="http://code.google.com/apis/analytics/">Google Analytics</a> raw data XML API on load (at most once per hour) and dumps the necessary data into an XML file. At each load, it parses the XML and uses Monte Ohrt\'s <a href="http://www.phpinsider.com/php/code/GoogleMapAPI/">PHP GoogleMapAPI</a> to generate a Google Map.</em> <strong>Note: tooltips are used.</strong></p>';
 ?>
 
 </div> <!-- END analyticsContainer DIV -->
