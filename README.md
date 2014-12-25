@@ -1,6 +1,6 @@
 xmlfinal
 =========
 
-__Repository Status: Abandoned__ (ready for use, but I have no intent on continuing development; new maintaners are welcome) as of 2014-12-07
+[![Project Status: Unsupported - The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](http://www.repostatus.org/badges/0.1.0/unsupported.svg)](http://www.repostatus.org/#unsupported)
 
 My final project from my Building Data-Driven Websites undergrad course. Here for nostalgia.
